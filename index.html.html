@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GML Viajes y Tours · Riviera Maya · Cancún · Caribe Mexicano</title>
+<meta name="description" content="GML Viajes y Tours — Cancún, Playa del Carmen, Puerto Morelos, Isla Mujeres, Cozumel. Tu agencia de viajes en Villahermosa, Tabasco.">
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --sol:#FFB800;--sol-d:#E09600;--turquesa:#00C4CC;--turquesa-d:#009DA3;
+  --turquesa-light:#E0FAFA;--coral:#FF6B6B;--coral-d:#E04F4F;
+  --arena:#FFF8EC;--arena-d:#FFE8BB;--verde-palma:#2D9E5F;
+  --azul-caribe:#006E91;--azul-profundo:#003D52;--blanco:#FFFFFF;
+  --texto:#1a3040;--muted:#5a7585;
+  --sans:'Nunito',sans-serif;--display:'Pacifico',cursive;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--arena);color:var(--texto);overflow-x:hidden}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--arena-d)}
+::-webkit-scrollbar-thumb{background:var(--turquesa);border-radius:10px}
+
+/* WA FLOAT */
+.wa-float{position:fixed;bottom:1.8rem;right:1.8rem;z-index:999;background:#25D366;
+  width:60px;height:60px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:1.8rem;text-decoration:none;
+  box-shadow:0 6px 24px rgba(37,211,102,.5);animation:bounce 2.5s ease-in-out infinite;
+  transition:transform .2s}
+.wa-float:hover{transform:scale(1.15);animation:none}
+.wa-tooltip{position:absolute;right:72px;background:var(--azul-profundo);color:#fff;
+  white-space:nowrap;padding:.5rem 1rem;border-radius:20px;font-size:.8rem;font-weight:700;
+  opacity:0;pointer-events:none;transition:opacity .2s}
+.wa-float:hover .wa-tooltip{opacity:1}
+
+/* NAV */
+nav{position:fixed;top:0;width:100%;z-index:100;display:flex;justify-content:space-between;
+  align-items:center;padding:1rem 3rem;transition:all .4s}
+nav.scrolled{background:rgba(0,61,82,.96);backdrop-filter:blur(16px);padding:.8rem 3rem;
+  box-shadow:0 4px 24px rgba(0,0,0,.25)}
+.nav-logo-gml{font-family:var(--display);font-size:1.7rem;color:var(--sol);
+  text-shadow:0 2px 8px rgba(0,0,0,.3);line-height:1}
+.nav-logo-sub{font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;
+  color:rgba(255,255,255,.7);margin-top:-.1rem}
+.nav-links{display:flex;gap:2rem;list-style:none;align-items:center}
+.nav-links a{text-decoration:none;color:rgba(255,255,255,.85);font-size:.82rem;
+  font-weight:700;letter-spacing:.06em;transition:color .2s;text-transform:uppercase}
+.nav-links a:hover{color:var(--sol)}
+.nav-cta{background:var(--sol);color:var(--azul-profundo);border:none;padding:.6rem 1.5rem;
+  border-radius:50px;font-family:var(--sans);font-size:.82rem;font-weight:800;cursor:pointer;
+  transition:all .2s;box-shadow:0 4px 16px rgba(255,184,0,.4)}
+.nav-cta:hover{background:#ffc922;transform:translateY(-2px)}
+
+/* HERO */
+.hero{min-height:100vh;position:relative;display:flex;align-items:center;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:0}
+.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:center}
+.hero-overlay{position:absolute;inset:0;background:
+  linear-gradient(to right,rgba(0,30,50,.78) 0%,rgba(0,30,50,.3) 60%,transparent 100%),
+  linear-gradient(to top,rgba(0,61,82,.55) 0%,transparent 50%);z-index:1}
+.hero-content{position:relative;z-index:2;padding:0 3rem;max-width:660px}
+.hero-badge{display:inline-flex;align-items:center;gap:.5rem;
+  background:rgba(255,184,0,.18);border:1px solid rgba(255,184,0,.5);color:var(--sol);
+  padding:.4rem 1rem;border-radius:50px;font-size:.75rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.5rem;backdrop-filter:blur(8px)}
+.hero-badge span{background:var(--sol);color:var(--azul-profundo);border-radius:50px;padding:.1rem .6rem;font-size:.68rem}
+.hero-h1{font-family:var(--display);font-size:clamp(2.8rem,6vw,5.5rem);color:#fff;
+  line-height:1.1;margin-bottom:1rem;text-shadow:0 4px 24px rgba(0,0,0,.4)}
+.hero-h1 .dest{color:var(--sol)}
+.hero-desc{font-size:1.05rem;color:rgba(255,255,255,.85);line-height:1.8;
+  max-width:480px;margin-bottom:2.5rem;font-weight:400}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap}
+.btn-sol{background:var(--sol);color:var(--azul-profundo);border:none;padding:1rem 2.2rem;
+  border-radius:50px;font-weight:800;font-size:.9rem;cursor:pointer;transition:all .2s;
+  text-decoration:none;display:inline-flex;align-items:center;gap:.5rem;
+  box-shadow:0 6px 24px rgba(255,184,0,.45)}
+.btn-sol:hover{transform:translateY(-3px);box-shadow:0 10px 32px rgba(255,184,0,.55);background:#ffc922}
+.btn-white{background:rgba(255,255,255,.15);color:#fff;border:2px solid rgba(255,255,255,.6);
+  padding:1rem 2rem;border-radius:50px;font-weight:700;font-size:.9rem;cursor:pointer;
+  transition:all .2s;backdrop-filter:blur(8px)}
+.btn-white:hover{background:rgba(255,255,255,.25);border-color:#fff}
+.hero-chips{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);z-index:3;
+  display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;padding:0 1rem}
+.hero-chip{background:rgba(255,255,255,.13);backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,.3);color:#fff;padding:.5rem 1.2rem;border-radius:50px;
+  font-size:.8rem;font-weight:700;display:flex;align-items:center;gap:.4rem;
+  transition:all .2s;cursor:pointer;text-decoration:none}
+.hero-chip:hover{background:var(--sol);color:var(--azul-profundo);border-color:var(--sol)}
+
+/* TICKER */
+.ticker{background:linear-gradient(90deg,var(--turquesa) 0%,var(--azul-caribe) 100%);
+  padding:.7rem 0;overflow:hidden;white-space:nowrap}
+.ticker-track{display:inline-flex;animation:ticker 30s linear infinite}
+.ticker-item{font-weight:700;font-size:.9rem;color:#fff;padding:0 2rem;
+  display:inline-flex;align-items:center;gap:1.5rem}
+.ticker-sep{color:var(--sol);font-size:1.1rem}
+
+/* SECTION COMMONS */
+.section-head{text-align:center;margin-bottom:3.5rem}
+.section-kicker{font-size:.75rem;letter-spacing:.25em;text-transform:uppercase;
+  color:var(--turquesa-d);font-weight:700;margin-bottom:.8rem;
+  display:flex;align-items:center;justify-content:center;gap:.8rem}
+.section-kicker::before,.section-kicker::after{content:'✦';color:var(--sol)}
+.section-h2{font-family:var(--display);font-size:clamp(2rem,4vw,3rem);
+  color:var(--azul-profundo);line-height:1.2}
+.section-sub{font-size:1rem;color:var(--muted);margin-top:.8rem;font-weight:400}
+
+/* DESTINOS */
+.destinos{padding:5rem 3rem;background:var(--arena)}
+.destinos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.destino-card{position:relative;border-radius:24px;overflow:hidden;cursor:pointer;
+  text-decoration:none;display:block;box-shadow:0 8px 32px rgba(0,61,82,.12);
+  transition:all .35s cubic-bezier(.25,.46,.45,.94)}
+.destino-card:hover{transform:translateY(-8px) scale(1.01);box-shadow:0 20px 60px rgba(0,61,82,.22)}
+.destino-card.featured{grid-column:1/3}
+.card-img{position:relative;overflow:hidden}
+.card-img img{width:100%;height:260px;object-fit:cover;transition:transform .5s ease;display:block}
+.destino-card.featured .card-img img{height:360px}
+.destino-card:hover .card-img img{transform:scale(1.08)}
+.card-img::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(0,30,50,.82) 0%,rgba(0,30,50,.1) 50%,transparent 100%)}
+.card-badge{position:absolute;top:1rem;left:1rem;z-index:2;background:var(--sol);
+  color:var(--azul-profundo);padding:.3rem .9rem;border-radius:50px;font-size:.68rem;font-weight:800;letter-spacing:.06em}
+.card-badge.turquesa{background:var(--turquesa);color:#fff}
+.card-badge.coral{background:var(--coral);color:#fff}
+.card-info{position:absolute;bottom:0;left:0;right:0;padding:1.5rem;z-index:2}
+.card-pais{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:.3rem}
+.card-nombre{font-family:var(--display);font-size:1.6rem;color:#fff;line-height:1.1;margin-bottom:.5rem}
+.destino-card.featured .card-nombre{font-size:2.2rem}
+.card-detalle{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.card-precio{background:rgba(255,184,0,.22);border:1px solid rgba(255,184,0,.5);
+  color:var(--sol);padding:.25rem .8rem;border-radius:50px;font-size:.75rem;font-weight:700}
+.card-dias{color:rgba(255,255,255,.75);font-size:.78rem}
+.card-cta{margin-left:auto;background:var(--sol);color:var(--azul-profundo);
+  padding:.4rem 1rem;border-radius:50px;font-size:.75rem;font-weight:800;border:none;cursor:pointer}
+
+/* SOL STRIP */
+.sol-strip{background:linear-gradient(135deg,var(--sol) 0%,#FF9A00 100%);
+  padding:3rem;text-align:center;position:relative;overflow:hidden}
+.sol-strip::before{content:'☀';position:absolute;font-size:15rem;opacity:.08;top:-3rem;right:-2rem;line-height:1}
+.sol-strip-h{font-family:var(--display);font-size:clamp(1.5rem,3vw,2.5rem);color:var(--azul-profundo);margin-bottom:.8rem}
+.sol-strip-sub{color:rgba(0,30,50,.65);font-size:1rem;margin-bottom:1.5rem;max-width:500px;margin-left:auto;margin-right:auto}
+.sol-stats{display:flex;justify-content:center;gap:4rem;flex-wrap:wrap;margin-top:1rem}
+.sol-stat-num{font-family:var(--display);font-size:2.5rem;color:var(--azul-profundo);line-height:1}
+.sol-stat-label{font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(0,30,50,.6);margin-top:.3rem}
+
+/* SERVICIOS */
+.servicios{padding:5rem 3rem;background:linear-gradient(135deg,#E0FAFA 0%,#FFF8EC 100%)}
+.servicios-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem}
+.servicio-card{background:#fff;border-radius:20px;padding:2rem;text-align:center;
+  box-shadow:0 4px 20px rgba(0,61,82,.08);transition:all .3s;position:relative;overflow:hidden}
+.servicio-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,var(--turquesa),var(--sol));border-radius:20px 20px 0 0}
+.servicio-card:hover{transform:translateY(-6px);box-shadow:0 12px 40px rgba(0,61,82,.14)}
+.servicio-emoji{font-size:2.5rem;margin-bottom:1rem;display:block}
+.servicio-nombre{font-size:1.05rem;font-weight:800;color:var(--azul-profundo);margin-bottom:.6rem}
+.servicio-desc{font-size:.87rem;color:var(--muted);line-height:1.7}
+
+/* AGENTE */
+.agente{padding:5rem 3rem;background:var(--azul-profundo);position:relative;overflow:hidden}
+.agente::before{content:'';position:absolute;top:-100px;right:-100px;width:500px;height:500px;
+  border-radius:50%;background:radial-gradient(circle,rgba(0,196,204,.15),transparent 70%)}
+.agente-inner{display:grid;grid-template-columns:auto 1fr;gap:4rem;align-items:center;position:relative;z-index:1}
+.agente-foto-wrap{position:relative}
+.agente-foto{width:280px;height:340px;border-radius:24px;overflow:hidden;
+  background:linear-gradient(160deg,var(--turquesa) 0%,var(--azul-caribe) 100%);
+  display:flex;align-items:center;justify-content:center;font-size:7rem;
+  border:4px solid rgba(255,184,0,.3)}
+.agente-foto-ring{position:absolute;inset:-12px;border:2px dashed rgba(255,184,0,.2);border-radius:30px}
+.agente-exp{position:absolute;bottom:-1.2rem;right:-1.2rem;background:var(--sol);
+  color:var(--azul-profundo);padding:1.2rem 1.5rem;border-radius:16px;text-align:center;
+  font-weight:800;box-shadow:0 8px 24px rgba(255,184,0,.4)}
+.exp-num{font-family:var(--display);font-size:2rem;line-height:1;display:block}
+.exp-label{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;margin-top:.2rem}
+.agente-kicker{font-size:.72rem;letter-spacing:.25em;text-transform:uppercase;
+  color:var(--turquesa);margin-bottom:1rem;font-weight:700}
+.agente-nombre{font-family:var(--display);font-size:clamp(2rem,3.5vw,3rem);color:#fff;margin-bottom:.4rem}
+.agente-empresa{font-size:1rem;font-weight:800;letter-spacing:.1em;color:var(--sol);text-transform:uppercase;margin-bottom:.3rem}
+.agente-cargo{font-size:.78rem;color:rgba(255,255,255,.5);letter-spacing:.1em;margin-bottom:1.8rem}
+.agente-bio{font-size:1rem;line-height:1.9;color:rgba(255,255,255,.75);
+  border-left:3px solid var(--sol);padding-left:1.2rem;margin-bottom:2rem;font-style:italic}
+.agente-logros{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem}
+.logro{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  border-radius:14px;padding:1rem;text-align:center}
+.logro-num{font-family:var(--display);font-size:1.8rem;color:var(--sol);line-height:1}
+.logro-label{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-top:.3rem}
+.agente-btns{display:flex;gap:.8rem;flex-wrap:wrap}
+.btn-turquesa{background:var(--turquesa);color:#fff;border:none;padding:.75rem 1.6rem;
+  border-radius:50px;font-weight:700;font-size:.85rem;cursor:pointer;transition:all .2s;
+  text-decoration:none;display:inline-block}
+.btn-turquesa:hover{background:var(--turquesa-d);transform:translateY(-2px)}
+.btn-outline-w{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.3);
+  padding:.75rem 1.6rem;border-radius:50px;font-weight:600;font-size:.85rem;cursor:pointer;
+  transition:all .2s;text-decoration:none;display:inline-block}
+.btn-outline-w:hover{border-color:#fff;background:rgba(255,255,255,.08)}
+
+/* PROCESO */
+.proceso{padding:5rem 3rem;background:var(--arena)}
+.pasos{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-top:3rem;position:relative}
+.pasos::before{content:'';position:absolute;top:2.8rem;left:12.5%;right:12.5%;height:2px;
+  background:linear-gradient(90deg,var(--turquesa),var(--sol));z-index:0}
+.paso-card{background:#fff;border-radius:20px;padding:2rem 1.5rem;text-align:center;
+  box-shadow:0 4px 20px rgba(0,61,82,.08);position:relative;z-index:1;transition:all .3s}
+.paso-card:hover{transform:translateY(-6px);box-shadow:0 12px 36px rgba(0,61,82,.14)}
+.paso-num-c{width:56px;height:56px;border-radius:50%;
+  background:linear-gradient(135deg,var(--turquesa),var(--azul-caribe));
+  color:#fff;font-family:var(--display);font-size:1.4rem;
+  display:flex;align-items:center;justify-content:center;margin:0 auto 1.2rem;
+  box-shadow:0 4px 16px rgba(0,196,204,.4)}
+.paso-ico{font-size:1.3rem;margin-bottom:.8rem;display:block}
+.paso-titulo{font-weight:800;font-size:1rem;color:var(--azul-profundo);margin-bottom:.5rem}
+.paso-desc{font-size:.82rem;color:var(--muted);line-height:1.65}
+
+/* TESTIMONIOS */
+.testimonios{padding:5rem 3rem;background:linear-gradient(135deg,var(--turquesa-light) 0%,var(--arena) 100%)}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem}
+.testi-card{background:#fff;border-radius:20px;padding:2rem;
+  box-shadow:0 4px 20px rgba(0,61,82,.08);transition:all .3s;position:relative}
+.testi-card::before{content:'"';font-family:var(--display);font-size:5rem;color:var(--sol);
+  opacity:.25;position:absolute;top:.5rem;left:1.5rem;line-height:.8}
+.testi-card:hover{transform:translateY(-5px);box-shadow:0 12px 40px rgba(0,61,82,.13)}
+.testi-stars{color:var(--sol);font-size:1rem;margin-bottom:1.2rem;margin-top:.5rem}
+.testi-texto{font-size:.9rem;line-height:1.8;color:var(--muted);margin-bottom:1.5rem;
+  font-style:italic;padding-top:2.2rem}
+.testi-autor{display:flex;align-items:center;gap:.8rem}
+.testi-ava{width:44px;height:44px;border-radius:50%;
+  background:linear-gradient(135deg,var(--turquesa),var(--azul-caribe));
+  display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.testi-nombre{font-weight:800;font-size:.88rem;color:var(--azul-profundo)}
+.testi-dest{font-size:.72rem;color:var(--turquesa-d);font-weight:600}
+
+/* CTA FINAL */
+.cta-final{padding:6rem 3rem;position:relative;overflow:hidden;text-align:center;
+  background:linear-gradient(135deg,#006E91 0%,#003D52 50%,#00242F 100%)}
+.cta-final::before{content:'🌴';font-size:16rem;position:absolute;left:-2rem;bottom:-3rem;opacity:.07;line-height:1}
+.cta-final::after{content:'🌴';font-size:12rem;position:absolute;right:-1rem;bottom:-2rem;opacity:.06;line-height:1;transform:scaleX(-1)}
+.cta-inner{position:relative;z-index:2}
+.cta-kicker{font-size:.75rem;letter-spacing:.25em;text-transform:uppercase;color:var(--turquesa);
+  font-weight:700;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:center;gap:.8rem}
+.cta-kicker::before,.cta-kicker::after{content:'🌊'}
+.cta-h2{font-family:var(--display);font-size:clamp(2.5rem,5vw,4.2rem);color:#fff;line-height:1.1;margin-bottom:1rem}
+.cta-h2 span{color:var(--sol)}
+.cta-sub{color:rgba(255,255,255,.6);font-size:1rem;max-width:480px;margin:0 auto 3rem;line-height:1.8}
+.cta-form{display:flex;max-width:460px;margin:0 auto 1.5rem;border-radius:50px;
+  overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.3)}
+.cta-input{flex:1;background:rgba(255,255,255,.12);border:none;
+  border-right:1px solid rgba(255,255,255,.15);padding:1rem 1.4rem;
+  color:#fff;font-family:var(--sans);font-size:.9rem;outline:none}
+.cta-input::placeholder{color:rgba(255,255,255,.4)}
+.cta-btn{background:var(--sol);border:none;padding:1rem 1.8rem;font-family:var(--sans);
+  font-size:.85rem;font-weight:800;color:var(--azul-profundo);cursor:pointer;
+  white-space:nowrap;transition:background .2s}
+.cta-btn:hover{background:#ffc922}
+.cta-nota{font-size:.72rem;color:rgba(255,255,255,.38);letter-spacing:.08em;margin-bottom:2rem}
+.cta-wa-btn{display:inline-flex;align-items:center;gap:.8rem;background:#25D366;color:#fff;
+  padding:1rem 2.5rem;border-radius:50px;font-weight:800;font-size:.9rem;text-decoration:none;
+  box-shadow:0 8px 24px rgba(37,211,102,.4);transition:all .2s}
+.cta-wa-btn:hover{transform:translateY(-3px);box-shadow:0 12px 36px rgba(37,211,102,.5)}
+
+/* FOOTER */
+footer{background:#00141F;padding:4rem 3rem 2rem;color:rgba(255,255,255,.6)}
+.footer-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:3rem;
+  margin-bottom:3rem;padding-bottom:3rem;border-bottom:1px solid rgba(255,255,255,.08)}
+.footer-logo-gml{font-family:var(--display);font-size:1.8rem;color:var(--sol);margin-bottom:.4rem}
+.footer-logo-sub{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(255,255,255,.35);margin-bottom:1rem}
+.footer-tagline{font-size:.84rem;line-height:1.7;max-width:220px}
+.footer-col-title{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--turquesa);margin-bottom:1.2rem;font-weight:700}
+.footer-links{list-style:none}
+.footer-links li{margin-bottom:.6rem}
+.footer-links a{color:rgba(255,255,255,.48);text-decoration:none;font-size:.85rem;transition:color .2s}
+.footer-links a:hover{color:var(--sol)}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:1rem;font-size:.72rem}
+.footer-social{display:flex;gap:.8rem}
+.social-btn{width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.15);
+  display:flex;align-items:center;justify-content:center;font-size:.9rem;cursor:pointer;
+  transition:all .2s;color:rgba(255,255,255,.4);text-decoration:none}
+.social-btn:hover{border-color:var(--sol);color:var(--sol);transform:translateY(-2px)}
+
+/* ANIMATIONS */
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
+
+/* RESPONSIVE */
+@media(max-width:1024px){
+  .destinos-grid{grid-template-columns:1fr 1fr}
+  .destino-card.featured{grid-column:1/3}
+  .agente-inner{grid-template-columns:1fr;gap:2rem}
+  .agente-foto{width:100%;max-width:320px;margin:0 auto}
+  .footer-top{grid-template-columns:1fr 1fr;gap:2rem}
+}
+@media(max-width:768px){
+  nav{padding:.8rem 1.5rem}.nav-links{display:none}
+  .hero-content{padding:0 1.5rem}
+  .destinos,.servicios,.proceso,.testimonios,.cta-final,.agente{padding:3rem 1.5rem}
+  .destinos-grid{grid-template-columns:1fr}
+  .destino-card.featured{grid-column:auto}
+  .servicios-grid{grid-template-columns:1fr}
+  .pasos{grid-template-columns:1fr 1fr}.pasos::before{display:none}
+  .testi-grid{grid-template-columns:1fr}
+  .sol-stats{gap:2rem}
+  .footer-top{grid-template-columns:1fr;gap:1.5rem}
+  .cta-form{flex-direction:column;border-radius:16px}
+  .cta-input{border-right:none;border-bottom:1px solid rgba(255,255,255,.15)}
+}
+</style>
+</head>
+<body>
+
+<a class="wa-float" href="https://wa.me/529933045662?text=Hola%20GML%20Viajes%2C%20me%20interesa%20un%20paquete%20al%20Caribe%20%F0%9F%8C%8A" target="_blank" rel="noopener">
+  💬<span class="wa-tooltip">¡Escríbenos ahora!</span>
+</a>
+
+<nav id="nav">
+  <div>
+    <div class="nav-logo-gml">GML</div>
+    <div class="nav-logo-sub">Viajes y Tours</div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#destinos">Destinos</a></li>
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#agente">Tu Agente</a></li>
+    <li><a href="#testimonios">Clientes</a></li>
+  </ul>
+  <button class="nav-cta" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">🌴 Cotizar viaje</button>
+</nav>
+
+<section class="hero" id="inicio">
+  <div class="hero-bg">
+    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1600&q=85&auto=format&fit=crop" alt="Playa caribeña en México" loading="eager">
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-badge"><span>✨ 2025</span> Paquetes disponibles</div>
+    <h1 class="hero-h1">El Caribe más<br><span class="dest">turquesa</span><br>te espera ☀️</h1>
+    <p class="hero-desc">Cancún · Playa del Carmen · Puerto Morelos · Isla Mujeres · Cozumel — Tu agencia en Villahermosa para llegar al paraíso.</p>
+    <div class="hero-btns">
+      <a class="btn-sol" href="#destinos">🌊 Ver destinos</a>
+      <button class="btn-white" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Cotización gratis</button>
+    </div>
+  </div>
+  <div class="hero-chips">
+    <a class="hero-chip" href="#pdcarmen">🌴 Playa del Carmen</a>
+    <a class="hero-chip" href="#cancun">🏖️ Cancún</a>
+    <a class="hero-chip" href="#pmorelos">⚓ Puerto Morelos</a>
+    <a class="hero-chip" href="#imujeres">🐠 Isla Mujeres</a>
+    <a class="hero-chip" href="#cozumel">🐢 Cozumel</a>
+  </div>
+</section>
+
+<div class="ticker">
+  <div class="ticker-track">
+    <span class="ticker-item">Playa del Carmen <span class="ticker-sep">🌴</span></span>
+    <span class="ticker-item">Cancún <span class="ticker-sep">🌊</span></span>
+    <span class="ticker-item">Puerto Morelos <span class="ticker-sep">⚓</span></span>
+    <span class="ticker-item">Isla Mujeres <span class="ticker-sep">🐠</span></span>
+    <span class="ticker-item">Cozumel <span class="ticker-sep">🐢</span></span>
+    <span class="ticker-item">GML Viajes y Tours <span class="ticker-sep">✈️</span></span>
+    <span class="ticker-item">Riviera Maya <span class="ticker-sep">☀️</span></span>
+    <span class="ticker-item">Playa del Carmen <span class="ticker-sep">🌴</span></span>
+    <span class="ticker-item">Cancún <span class="ticker-sep">🌊</span></span>
+    <span class="ticker-item">Puerto Morelos <span class="ticker-sep">⚓</span></span>
+    <span class="ticker-item">Isla Mujeres <span class="ticker-sep">🐠</span></span>
+    <span class="ticker-item">Cozumel <span class="ticker-sep">🐢</span></span>
+    <span class="ticker-item">GML Viajes y Tours <span class="ticker-sep">✈️</span></span>
+    <span class="ticker-item">Riviera Maya <span class="ticker-sep">☀️</span></span>
+  </div>
+</div>
+
+<section class="destinos reveal" id="destinos">
+  <div class="section-head">
+    <div class="section-kicker">Nuestros destinos</div>
+    <h2 class="section-h2">Arena blanca,<br>mar turquesa 🌊</h2>
+    <p class="section-sub">5 destinos del Caribe mexicano, un solo contacto. GML lo organiza todo.</p>
+  </div>
+  <div class="destinos-grid">
+
+    <a class="destino-card featured reveal d1" id="pdcarmen"
+       href="https://wa.me/529933045662?text=Hola%20GML%2C%20me%20interesa%20Playa%20del%20Carmen%20🌴" target="_blank">
+      <div class="card-img">
+        <img src="https://images.unsplash.com/photo-1552074284-5e88ef1aef18?w=900&q=85&auto=format&fit=crop" alt="Playa del Carmen">
+        <div class="card-badge">⭐ Más popular</div>
+      </div>
+      <div class="card-info">
+        <div class="card-pais">Quintana Roo · México</div>
+        <div class="card-nombre">Playa del Carmen</div>
+        <div class="card-detalle">
+          <div class="card-precio">Desde $8,900 MXN</div>
+          <div class="card-dias">4 noches</div>
+          <button class="card-cta">Cotizar →</button>
+        </div>
+      </div>
+    </a>
+
+    <a class="destino-card reveal d2" id="cancun"
+       href="https://wa.me/529933045662?text=Hola%20GML%2C%20me%20interesa%20Cancún%20🌊" target="_blank">
+      <div class="card-img">
+        <img src="https://images.unsplash.com/photo-1519046904884-53103b34b206?w=600&q=85&auto=format&fit=crop" alt="Cancún">
+        <div class="card-badge turquesa">🏖️ Todo incluido</div>
+      </div>
+      <div class="card-info">
+        <div class="card-pais">Quintana Roo · México</div>
+        <div class="card-nombre">Cancún</div>
+        <div class="card-detalle">
+          <div class="card-precio">Desde $12,500 MXN</div>
+          <div class="card-dias">5 noches</div>
+        </div>
+      </div>
+    </a>
+
+    <a class="destino-card reveal d3" id="imujeres"
+       href="https://wa.me/529933045662?text=Hola%20GML%2C%20me%20interesa%20Isla%20Mujeres%20🐠" target="_blank">
+      <div class="card-img">
+        <img src="https://images.unsplash.com/photo-1590523741831-ab7e8b8f9c7f?w=600&q=85&auto=format&fit=crop" alt="Isla Mujeres">
+        <div class="card-badge coral">🐠 Snorkel y relax</div>
+      </div>
+      <div class="card-info">
+        <div class="card-pais">Quintana Roo · México</div>
+        <div class="card-nombre">Isla Mujeres</div>
+        <div class="card-detalle">
+          <div class="card-precio">Desde $9,200 MXN</div>
+          <div class="card-dias">3 noches</div>
+        </div>
+      </div>
+    </a>
+
+    <a class="destino-card reveal d1" id="cozumel"
+       href="https://wa.me/529933045662?text=Hola%20GML%2C%20me%20interesa%20Cozumel%20🐢" target="_blank">
+      <div class="card-img">
+        <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&q=85&auto=format&fit=crop" alt="Cozumel">
+        <div class="card-badge turquesa">🤿 Buceo</div>
+      </div>
+      <div class="card-info">
+        <div class="card-pais">Quintana Roo · México</div>
+        <div class="card-nombre">Cozumel</div>
+        <div class="card-detalle">
+          <div class="card-precio">Desde $10,500 MXN</div>
+          <div class="card-dias">4 noches</div>
+        </div>
+      </div>
+    </a>
+
+    <a class="destino-card reveal d2" id="pmorelos"
+       href="https://wa.me/529933045662?text=Hola%20GML%2C%20me%20interesa%20Puerto%20Morelos%20⚓" target="_blank">
+      <div class="card-img">
+        <img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?w=600&q=85&auto=format&fit=crop" alt="Puerto Morelos">
+        <div class="card-badge">⚓ Tranquilo y auténtico</div>
+      </div>
+      <div class="card-info">
+        <div class="card-pais">Quintana Roo · México</div>
+        <div class="card-nombre">Puerto Morelos</div>
+        <div class="card-detalle">
+          <div class="card-precio">Desde $7,800 MXN</div>
+          <div class="card-dias">3 noches</div>
+        </div>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<div class="sol-strip">
+  <h3 class="sol-strip-h">☀️ GML Viajes y Tours — Tu paraíso, nuestro trabajo</h3>
+  <p class="sol-strip-sub">Más de 500 familias y parejas de Villahermosa ya viajaron con nosotros al Caribe. ¿Cuándo es tu turno?</p>
+  <div class="sol-stats">
+    <div><div class="sol-stat-num">500+</div><div class="sol-stat-label">Viajes realizados</div></div>
+    <div><div class="sol-stat-num">5</div><div class="sol-stat-label">Destinos Caribe</div></div>
+    <div><div class="sol-stat-num">98%</div><div class="sol-stat-label">Clientes felices</div></div>
+    <div><div class="sol-stat-num">8+</div><div class="sol-stat-label">Años de experiencia</div></div>
+  </div>
+</div>
+
+<section class="servicios reveal" id="servicios">
+  <div class="section-head">
+    <div class="section-kicker">Lo que incluimos</div>
+    <h2 class="section-h2">Todo listo,<br>tú solo disfruta 🍹</h2>
+  </div>
+  <div class="servicios-grid">
+    <div class="servicio-card reveal d1"><span class="servicio-emoji">✈️</span>
+      <div class="servicio-nombre">Vuelos desde Villahermosa</div>
+      <p class="servicio-desc">Conseguimos los mejores precios en vuelos directos o con escala para toda la familia o grupo.</p>
+    </div>
+    <div class="servicio-card reveal d2"><span class="servicio-emoji">🏨</span>
+      <div class="servicio-nombre">Hoteles y todo incluido</div>
+      <p class="servicio-desc">Desde resorts boutique hasta grandes all-inclusive. Seleccionados según tu presupuesto.</p>
+    </div>
+    <div class="servicio-card reveal d3"><span class="servicio-emoji">🚌</span>
+      <div class="servicio-nombre">Traslados coordinados</div>
+      <p class="servicio-desc">Aeropuerto-hotel coordinado. Sin estrés al llegar — tú ya vas en modo vacaciones desde que aterrizas.</p>
+    </div>
+    <div class="servicio-card reveal d1"><span class="servicio-emoji">🤿</span>
+      <div class="servicio-nombre">Tours y excursiones</div>
+      <p class="servicio-desc">Cenotes, snorkel, ruinas mayas, catamán. Coordinamos todo lo que quieras vivir en el Caribe.</p>
+    </div>
+    <div class="servicio-card reveal d2"><span class="servicio-emoji">🛡️</span>
+      <div class="servicio-nombre">Seguro de viaje</div>
+      <p class="servicio-desc">Cobertura médica, equipaje y cancelación. Viaja tranquilo sabiendo que estás protegido.</p>
+    </div>
+    <div class="servicio-card reveal d3"><span class="servicio-emoji">💑</span>
+      <div class="servicio-nombre">Luna de miel y grupos</div>
+      <p class="servicio-desc">Detalles románticos y cenas especiales. También organizamos grupos, despedidas y viajes de empresa.</p>
+    </div>
+  </div>
+</section>
+
+<section class="agente reveal" id="agente">
+  <div class="agente-inner">
+    <div class="agente-foto-wrap">
+      <div class="agente-foto-ring"></div>
+      <div class="agente-foto">👩‍✈️</div>
+      <div class="agente-exp"><span class="exp-num">8+</span><div class="exp-label">Años de experiencia</div></div>
+    </div>
+    <div>
+      <div class="agente-kicker">Tu agente personal</div>
+      <div class="agente-nombre">Tu asesora de confianza</div>
+      <div class="agente-empresa">GML Viajes y Tours</div>
+      <div class="agente-cargo">Agente Certificada · Villahermosa, Tabasco · 993 304 5662</div>
+      <p class="agente-bio">"No vendemos paquetes genéricos — diseñamos el viaje perfecto para ti. Cada destino, cada hotel, cada tour pensado para que regreses a casa con el corazón lleno."</p>
+      <div class="agente-logros">
+        <div class="logro"><div class="logro-num">500+</div><div class="logro-label">Viajes</div></div>
+        <div class="logro"><div class="logro-num">5</div><div class="logro-label">Destinos</div></div>
+        <div class="logro"><div class="logro-num">98%</div><div class="logro-label">Satisfacción</div></div>
+      </div>
+      <div class="agente-btns">
+        <a class="btn-turquesa" href="https://wa.me/529933045662?text=Hola%20GML%20Viajes" target="_blank">💬 WhatsApp</a>
+        <a class="btn-outline-w" href="tel:+529933045662">📞 993 304 5662</a>
+        <a class="btn-outline-w" href="mailto:contacto@gmlviajes.com">📧 Email</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="proceso reveal" id="proceso">
+  <div class="section-head">
+    <div class="section-kicker">Súper fácil</div>
+    <h2 class="section-h2">¿Cómo funciona GML? 🗺️</h2>
+    <p class="section-sub">En 4 pasos, desde Villahermosa hasta la playa.</p>
+  </div>
+  <div class="pasos">
+    <div class="paso-card reveal d1">
+      <div class="paso-num-c">1</div><span class="paso-ico">💬</span>
+      <div class="paso-titulo">Nos escribes</div>
+      <p class="paso-desc">WhatsApp o llamada. Cuéntanos destino, fechas, cuántos viajan y presupuesto.</p>
+    </div>
+    <div class="paso-card reveal d2">
+      <div class="paso-num-c">2</div><span class="paso-ico">🎯</span>
+      <div class="paso-titulo">Diseñamos tu paquete</div>
+      <p class="paso-desc">En 24 horas tienes propuesta completa con vuelo, hotel, traslados y más.</p>
+    </div>
+    <div class="paso-card reveal d3">
+      <div class="paso-num-c">3</div><span class="paso-ico">✅</span>
+      <div class="paso-titulo">Confirmas y listo</div>
+      <p class="paso-desc">Ajustamos lo que quieras y confirmamos tu reserva con el mejor precio garantizado.</p>
+    </div>
+    <div class="paso-card reveal">
+      <div class="paso-num-c">4</div><span class="paso-ico">🌊</span>
+      <div class="paso-titulo">¡A la playa!</div>
+      <p class="paso-desc">Recibes todos tus documentos. GML sigue contigo durante todo el viaje.</p>
+    </div>
+  </div>
+</section>
+
+<section class="testimonios reveal" id="testimonios">
+  <div class="section-head">
+    <div class="section-kicker">Nuestros viajeros dicen</div>
+    <h2 class="section-h2">Historias reales,<br>playas reales 🏖️</h2>
+  </div>
+  <div class="testi-grid">
+    <div class="testi-card reveal d1">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-texto">Viajamos a Cancún 6 personas y GML coordinó todo perfecto — vuelos, hotel 5 estrellas y tours. El precio fue mejor que cualquier app. ¡Volvemos en diciembre!</p>
+      <div class="testi-autor"><div class="testi-ava">👨‍👩‍👧</div><div>
+        <div class="testi-nombre">Familia Hernández</div><div class="testi-dest">Cancún todo incluido · 2024</div>
+      </div></div>
+    </div>
+    <div class="testi-card reveal d2">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-texto">Mi luna de miel en Playa del Carmen fue mágica. GML arregló el cuarto decorado, la cena romántica en la playa... ¡todo perfecto! Las mejores vacaciones de mi vida.</p>
+      <div class="testi-autor"><div class="testi-ava">💑</div><div>
+        <div class="testi-nombre">Andrea &amp; Carlos</div><div class="testi-dest">Playa del Carmen · Luna de miel</div>
+      </div></div>
+    </div>
+    <div class="testi-card reveal d3">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-texto">Fui a Cozumel a bucear con amigos. GML nos consiguió el mejor instructor y el arrecife más hermoso. Son de Villahermosa como nosotros — ¡los recomiendo al 100%!</p>
+      <div class="testi-autor"><div class="testi-ava">🤿</div><div>
+        <div class="testi-nombre">Miguel Ángel Ruiz</div><div class="testi-dest">Cozumel · Buceo y aventura</div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-final" id="cta">
+  <div class="cta-inner">
+    <div class="cta-kicker">¡El mar te llama!</div>
+    <h2 class="cta-h2">Tu paquete al<br><span>Caribe</span> empieza<br>con un mensaje ☀️</h2>
+    <p class="cta-sub">Déjanos tu número y te enviamos opciones hoy mismo — sin costo, sin compromiso.</p>
+    <div class="cta-form">
+      <input class="cta-input" type="tel" id="tel-inp" placeholder="Tu número de WhatsApp (993...)">
+      <button class="cta-btn" id="btn-cta">¡Quiero ir! 🌊</button>
+    </div>
+    <p class="cta-nota">Respuesta en menos de 1 hora · Villahermosa, Tab. · 993 304 5662</p><br><br>
+    <a class="cta-wa-btn" href="https://wa.me/529933045662?text=Hola%20GML%20Viajes%20y%20Tours%2C%20quiero%20un%20paquete%20al%20Caribe%20%F0%9F%8C%8A%20%E2%98%80%EF%B8%8F" target="_blank" rel="noopener">
+      💬 Escríbenos directo a WhatsApp
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo-gml">GML</div>
+      <div class="footer-logo-sub">Viajes y Tours · Villahermosa</div>
+      <p class="footer-tagline">Tu agencia del Caribe mexicano en Villahermosa, Tabasco. 8+ años llevándote al paraíso.</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Destinos</div>
+      <ul class="footer-links">
+        <li><a href="#pdcarmen">Playa del Carmen</a></li>
+        <li><a href="#cancun">Cancún</a></li>
+        <li><a href="#pmorelos">Puerto Morelos</a></li>
+        <li><a href="#imujeres">Isla Mujeres</a></li>
+        <li><a href="#cozumel">Cozumel</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Servicios</div>
+      <ul class="footer-links">
+        <li><a href="#">Vuelos</a></li>
+        <li><a href="#">Hoteles</a></li>
+        <li><a href="#">Todo incluido</a></li>
+        <li><a href="#">Luna de miel</a></li>
+        <li><a href="#">Grupos</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Contacto</div>
+      <ul class="footer-links">
+        <li><a href="tel:+529933045662">993 304 5662</a></li>
+        <li><a href="https://wa.me/529933045662" target="_blank">WhatsApp</a></li>
+        <li><a href="mailto:contacto@gmlviajes.com">Email</a></li>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">Facebook</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 GML Viajes y Tours · Villahermosa, Tabasco · 993 304 5662</span>
+    <div class="footer-social">
+      <a class="social-btn" href="#" aria-label="Instagram">📸</a>
+      <a class="social-btn" href="#" aria-label="Facebook">📘</a>
+      <a class="social-btn" href="#" aria-label="TikTok">🎵</a>
+      <a class="social-btn" href="https://wa.me/529933045662" target="_blank" aria-label="WhatsApp">💬</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>60));
+const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible')}),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(r=>io.observe(r));
+document.getElementById('btn-cta').addEventListener('click',()=>{
+  const val=document.getElementById('tel-inp').value.trim();
+  if(val){
+    window.open('https://wa.me/529933045662?text='+encodeURIComponent('Hola GML Viajes! 🌊 Mi número es '+val+'. Quiero info sobre paquetes al Caribe ☀️'),'_blank');
+    document.getElementById('tel-inp').value='';
+  } else {
+    const i=document.getElementById('tel-inp');
+    i.placeholder='¡Escribe tu número primero! 📱';
+    setTimeout(()=>i.placeholder='Tu número de WhatsApp (993...)',2200);
+  }
+});
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'center'})}
+  });
+});
+</script>
+</body>
+</html>
