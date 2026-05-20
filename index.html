@@ -53,13 +53,13 @@ nav.scrolled{background:rgba(0,61,82,.96);backdrop-filter:blur(16px);padding:.8r
 .nav-cta:hover{background:#ffc922;transform:translateY(-2px)}
 
 /* HERO */
-.hero{min-height:100vh;position:relative;display:flex;align-items:center;overflow:hidden}
+.hero{min-height:100vh;position:relative;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;overflow:hidden;padding-bottom:3rem}
 .hero-bg{position:absolute;inset:0;z-index:0}
 .hero-bg img{width:100%;height:100%;object-fit:cover;object-position:center}
 .hero-overlay{position:absolute;inset:0;background:
   linear-gradient(to right,rgba(0,30,50,.78) 0%,rgba(0,30,50,.3) 60%,transparent 100%),
   linear-gradient(to top,rgba(0,61,82,.55) 0%,transparent 50%);z-index:1}
-.hero-content{position:relative;z-index:2;padding:0 3rem;max-width:660px}
+.hero-content{position:relative;z-index:2;padding:6rem 3rem 1.5rem;max-width:660px;width:100%}
 .hero-badge{display:inline-flex;align-items:center;gap:.5rem;
   background:rgba(255,184,0,.18);border:1px solid rgba(255,184,0,.5);color:var(--sol);
   padding:.4rem 1rem;border-radius:50px;font-size:.75rem;font-weight:700;
@@ -80,8 +80,9 @@ nav.scrolled{background:rgba(0,61,82,.96);backdrop-filter:blur(16px);padding:.8r
   padding:1rem 2rem;border-radius:50px;font-weight:700;font-size:.9rem;cursor:pointer;
   transition:all .2s;backdrop-filter:blur(8px)}
 .btn-white:hover{background:rgba(255,255,255,.25);border-color:#fff}
-.hero-chips{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);z-index:3;
-  display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;padding:0 1rem}
+.hero-chips{position:relative;z-index:3;
+  display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;padding:0 1rem;
+  margin-top:2.5rem}
 .hero-chip{background:rgba(255,255,255,.13);backdrop-filter:blur(12px);
   border:1px solid rgba(255,255,255,.3);color:#fff;padding:.5rem 1.2rem;border-radius:50px;
   font-size:.8rem;font-weight:700;display:flex;align-items:center;gap:.4rem;
@@ -113,10 +114,8 @@ nav.scrolled{background:rgba(0,61,82,.96);backdrop-filter:blur(16px);padding:.8r
   text-decoration:none;display:block;box-shadow:0 8px 32px rgba(0,61,82,.12);
   transition:all .35s cubic-bezier(.25,.46,.45,.94)}
 .destino-card:hover{transform:translateY(-8px) scale(1.01);box-shadow:0 20px 60px rgba(0,61,82,.22)}
-.destino-card.featured{grid-column:1/3}
 .card-img{position:relative;overflow:hidden}
-.card-img img{width:100%;height:260px;object-fit:cover;transition:transform .5s ease;display:block}
-.destino-card.featured .card-img img{height:360px}
+.card-img img{width:100%;height:240px;object-fit:cover;object-position:center;transition:transform .5s ease;display:block}
 .destino-card:hover .card-img img{transform:scale(1.08)}
 .card-img::after{content:'';position:absolute;inset:0;
   background:linear-gradient(to top,rgba(0,30,50,.82) 0%,rgba(0,30,50,.1) 50%,transparent 100%)}
@@ -126,8 +125,7 @@ nav.scrolled{background:rgba(0,61,82,.96);backdrop-filter:blur(16px);padding:.8r
 .card-badge.coral{background:var(--coral);color:#fff}
 .card-info{position:absolute;bottom:0;left:0;right:0;padding:1.5rem;z-index:2}
 .card-pais{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:.3rem}
-.card-nombre{font-family:var(--display);font-size:1.6rem;color:#fff;line-height:1.1;margin-bottom:.5rem}
-.destino-card.featured .card-nombre{font-size:2.2rem}
+.card-nombre{font-family:var(--display);font-size:1.5rem;color:#fff;line-height:1.1;margin-bottom:.5rem}
 .card-detalle{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
 .card-precio{background:rgba(255,184,0,.22);border:1px solid rgba(255,184,0,.5);
   color:var(--sol);padding:.25rem .8rem;border-radius:50px;font-size:.75rem;font-weight:700}
@@ -281,6 +279,58 @@ footer{background:#00141F;padding:4rem 3rem 2rem;color:rgba(255,255,255,.6)}
 .social-btn:hover{border-color:var(--sol);color:var(--sol);transform:translateY(-2px)}
 
 /* ANIMATIONS */
+/* ── CARRUSEL MUNDIAL ── */
+.carrusel-section{padding:5rem 0;background:var(--azul-profundo);overflow:hidden;position:relative}
+.carrusel-section::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 0%,rgba(0,196,204,.12),transparent 60%);pointer-events:none}
+.carrusel-head{text-align:center;padding:0 3rem;margin-bottom:3rem}
+.carrusel-head .section-kicker{color:var(--turquesa)}
+.carrusel-head .section-kicker::before,.carrusel-head .section-kicker::after{color:var(--sol)}
+.carrusel-head .section-h2{color:#fff}
+.carrusel-head .section-sub{color:rgba(255,255,255,.55)}
+
+.carrusel-wrapper{position:relative}
+.carrusel-track-outer{overflow:hidden;padding:1rem 0 2rem}
+.carrusel-track{display:flex;gap:1.5rem;transition:transform .55s cubic-bezier(.25,.46,.45,.94);
+  padding:0 3rem;will-change:transform}
+
+.c-card{flex:0 0 320px;border-radius:22px;overflow:hidden;position:relative;cursor:pointer;
+  text-decoration:none;display:block;box-shadow:0 8px 32px rgba(0,0,0,.35);
+  transition:transform .3s,box-shadow .3s}
+.c-card:hover{transform:translateY(-8px) scale(1.02);box-shadow:0 20px 56px rgba(0,0,0,.5)}
+.c-card img{width:100%;height:220px;object-fit:cover;display:block;transition:transform .5s ease}
+.c-card:hover img{transform:scale(1.06)}
+.c-card::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(0,10,30,.88) 0%,rgba(0,10,30,.1) 55%,transparent 100%)}
+.c-card-info{position:absolute;bottom:0;left:0;right:0;padding:1.4rem;z-index:2}
+.c-card-region{font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(255,255,255,.6);margin-bottom:.25rem}
+.c-card-nombre{font-family:var(--display);font-size:1.45rem;color:#fff;line-height:1.1;margin-bottom:.6rem}
+.c-card-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+.c-card-precio{background:rgba(255,184,0,.2);border:1px solid rgba(255,184,0,.45);
+  color:var(--sol);padding:.22rem .75rem;border-radius:50px;font-size:.72rem;font-weight:700}
+.c-card-btn{background:var(--turquesa);color:#fff;border:none;padding:.35rem .9rem;
+  border-radius:50px;font-size:.72rem;font-weight:700;cursor:pointer;transition:background .2s}
+.c-card-btn:hover{background:var(--turquesa-d)}
+.c-card-flag{position:absolute;top:1rem;right:1rem;z-index:3;font-size:1.6rem;
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,.4))}
+
+/* Flechas */
+.carrusel-arrow{position:absolute;top:50%;transform:translateY(-60%);z-index:10;
+  width:48px;height:48px;border-radius:50%;border:2px solid rgba(255,255,255,.25);
+  background:rgba(0,61,82,.7);backdrop-filter:blur(8px);color:#fff;font-size:1.2rem;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  transition:all .2s;box-shadow:0 4px 16px rgba(0,0,0,.3)}
+.carrusel-arrow:hover{background:var(--turquesa);border-color:var(--turquesa);transform:translateY(-60%) scale(1.1)}
+.carrusel-arrow.prev{left:1rem}
+.carrusel-arrow.next{right:1rem}
+
+/* Dots */
+.carrusel-dots{display:flex;justify-content:center;gap:.6rem;margin-top:1.5rem}
+.c-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.25);
+  cursor:pointer;transition:all .3s;border:none;padding:0}
+.c-dot.active{background:var(--sol);width:24px;border-radius:4px}
+
 @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 @keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
@@ -291,7 +341,6 @@ footer{background:#00141F;padding:4rem 3rem 2rem;color:rgba(255,255,255,.6)}
 /* RESPONSIVE */
 @media(max-width:1024px){
   .destinos-grid{grid-template-columns:1fr 1fr}
-  .destino-card.featured{grid-column:1/3}
   .agente-inner{grid-template-columns:1fr;gap:2rem}
   .agente-foto{width:100%;max-width:320px;margin:0 auto}
   .footer-top{grid-template-columns:1fr 1fr;gap:2rem}
@@ -301,7 +350,6 @@ footer{background:#00141F;padding:4rem 3rem 2rem;color:rgba(255,255,255,.6)}
   .hero-content{padding:0 1.5rem}
   .destinos,.servicios,.proceso,.testimonios,.cta-final,.agente{padding:3rem 1.5rem}
   .destinos-grid{grid-template-columns:1fr}
-  .destino-card.featured{grid-column:auto}
   .servicios-grid{grid-template-columns:1fr}
   .pasos{grid-template-columns:1fr 1fr}.pasos::before{display:none}
   .testi-grid{grid-template-columns:1fr}
@@ -346,7 +394,7 @@ footer{background:#00141F;padding:4rem 3rem 2rem;color:rgba(255,255,255,.6)}
       <button class="btn-white" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Cotización gratis</button>
     </div>
   </div>
-  <div class="hero-chips">
+  <div class="hero-chips" style="position:relative;z-index:3;width:100%;padding:0 3rem">
     <a class="hero-chip" href="#pdcarmen">🌴 Playa del Carmen</a>
     <a class="hero-chip" href="#cancun">🏖️ Cancún</a>
     <a class="hero-chip" href="#pmorelos">⚓ Puerto Morelos</a>
@@ -382,7 +430,7 @@ footer{background:#00141F;padding:4rem 3rem 2rem;color:rgba(255,255,255,.6)}
   </div>
   <div class="destinos-grid">
 
-    <a class="destino-card featured reveal d1" id="pdcarmen"
+    <a class="destino-card reveal d1" id="pdcarmen"
        href="https://wa.me/529933045662?text=Hola%20GML%2C%20me%20interesa%20Playa%20del%20Carmen%20🌴" target="_blank">
       <div class="card-img">
         <img src="https://images.unsplash.com/photo-1552074284-5e88ef1aef18?w=900&q=85&auto=format&fit=crop" alt="Playa del Carmen">
@@ -402,7 +450,7 @@ footer{background:#00141F;padding:4rem 3rem 2rem;color:rgba(255,255,255,.6)}
     <a class="destino-card reveal d2" id="cancun"
        href="https://wa.me/529933045662?text=Hola%20GML%2C%20me%20interesa%20Cancún%20🌊" target="_blank">
       <div class="card-img">
-        <img src="https://images.unsplash.com/photo-1519046904884-53103b34b206?w=600&q=85&auto=format&fit=crop" alt="Cancún">
+        <img src="https://images.unsplash.com/photo-1519046904884-53103b34b206?w=600&q=85&auto=format&fit=crop" alt="Cancún" style="object-position:center 30%">
         <div class="card-badge turquesa">🏖️ Todo incluido</div>
       </div>
       <div class="card-info">
@@ -463,6 +511,154 @@ footer{background:#00141F;padding:4rem 3rem 2rem;color:rgba(255,255,255,.6)}
       </div>
     </a>
 
+  </div>
+</section>
+
+<section class="carrusel-section reveal" id="mundial">
+  <div class="carrusel-head">
+    <div class="section-kicker">Destinos internacionales</div>
+    <h2 class="section-h2">El mundo entero,<br>al alcance de tu mano 🌍</h2>
+    <p class="section-sub">¿Ya soñaste con Europa, Asia o América del Sur? Con GML también llegamos ahí.</p>
+  </div>
+  <div class="carrusel-wrapper">
+    <button class="carrusel-arrow prev" id="c-prev">&#8592;</button>
+    <button class="carrusel-arrow next" id="c-next">&#8594;</button>
+    <div class="carrusel-track-outer">
+      <div class="carrusel-track" id="c-track">
+
+        <a class="c-card" href="https://wa.me/529933045662?text=Hola%20GML%2C%20me%20interesa%20París%20🗼" target="_blank">
+          <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600&q=80&auto=format&fit=crop" alt="París Francia">
+          <span class="c-card-flag">🇫🇷</span>
+          <div class="c-card-info">
+            <div class="c-card-region">Europa · Francia</div>
+            <div class="c-card-nombre">París</div>
+            <div class="c-card-footer">
+              <div class="c-card-precio">Desde $28,000 MXN</div>
+              <button class="c-card-btn">Cotizar →</button>
+            </div>
+          </div>
+        </a>
+
+        <a class="c-card" href="https://wa.me/529933045662?text=Hola%20GML%2C%20me%20interesa%20Santorini%20🏛️" target="_blank">
+          <img src="https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=600&q=80&auto=format&fit=crop" alt="Santorini Grecia">
+          <span class="c-card-flag">🇬🇷</span>
+          <div class="c-card-info">
+            <div class="c-card-region">Europa · Grecia</div>
+            <div class="c-card-nombre">Santorini</div>
+            <div class="c-card-footer">
+              <div class="c-card-precio">Desde $32,500 MXN</div>
+              <button class="c-card-btn">Cotizar →</button>
+            </div>
+          </div>
+        </a>
+
+        <a class="c-card" href="https://wa.me/529933045662?text=Hola%20GML%2C%20me%20interesa%20Roma%20🏛️" target="_blank">
+          <img src="https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=600&q=80&auto=format&fit=crop" alt="Roma Italia">
+          <span class="c-card-flag">🇮🇹</span>
+          <div class="c-card-info">
+            <div class="c-card-region">Europa · Italia</div>
+            <div class="c-card-nombre">Roma</div>
+            <div class="c-card-footer">
+              <div class="c-card-precio">Desde $26,000 MXN</div>
+              <button class="c-card-btn">Cotizar →</button>
+            </div>
+          </div>
+        </a>
+
+        <a class="c-card" href="https://wa.me/529933045662?text=Hola%20GML%2C%20me%20interesa%20Tokio%20🗾" target="_blank">
+          <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=80&auto=format&fit=crop" alt="Tokio Japón">
+          <span class="c-card-flag">🇯🇵</span>
+          <div class="c-card-info">
+            <div class="c-card-region">Asia · Japón</div>
+            <div class="c-card-nombre">Tokio</div>
+            <div class="c-card-footer">
+              <div class="c-card-precio">Desde $45,000 MXN</div>
+              <button class="c-card-btn">Cotizar →</button>
+            </div>
+          </div>
+        </a>
+
+        <a class="c-card" href="https://wa.me/529933045662?text=Hola%20GML%2C%20me%20interesa%20Bali%20🌿" target="_blank">
+          <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&q=80&auto=format&fit=crop" alt="Bali Indonesia">
+          <span class="c-card-flag">🇮🇩</span>
+          <div class="c-card-info">
+            <div class="c-card-region">Asia · Indonesia</div>
+            <div class="c-card-nombre">Bali</div>
+            <div class="c-card-footer">
+              <div class="c-card-precio">Desde $25,500 MXN</div>
+              <button class="c-card-btn">Cotizar →</button>
+            </div>
+          </div>
+        </a>
+
+        <a class="c-card" href="https://wa.me/529933045662?text=Hola%20GML%2C%20me%20interesa%20Nueva%20York%20🗽" target="_blank">
+          <img src="https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=600&q=80&auto=format&fit=crop" alt="Nueva York USA">
+          <span class="c-card-flag">🇺🇸</span>
+          <div class="c-card-info">
+            <div class="c-card-region">América · EUA</div>
+            <div class="c-card-nombre">Nueva York</div>
+            <div class="c-card-footer">
+              <div class="c-card-precio">Desde $22,000 MXN</div>
+              <button class="c-card-btn">Cotizar →</button>
+            </div>
+          </div>
+        </a>
+
+        <a class="c-card" href="https://wa.me/529933045662?text=Hola%20GML%2C%20me%20interesa%20Machu%20Picchu%20🏔️" target="_blank">
+          <img src="https://images.unsplash.com/photo-1587595431973-160d0d94add1?w=600&q=80&auto=format&fit=crop" alt="Machu Picchu Perú">
+          <span class="c-card-flag">🇵🇪</span>
+          <div class="c-card-info">
+            <div class="c-card-region">América del Sur · Perú</div>
+            <div class="c-card-nombre">Machu Picchu</div>
+            <div class="c-card-footer">
+              <div class="c-card-precio">Desde $29,000 MXN</div>
+              <button class="c-card-btn">Cotizar →</button>
+            </div>
+          </div>
+        </a>
+
+        <a class="c-card" href="https://wa.me/529933045662?text=Hola%20GML%2C%20me%20interesa%20Dubái%20🏙️" target="_blank">
+          <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&q=80&auto=format&fit=crop" alt="Dubái Emiratos">
+          <span class="c-card-flag">🇦🇪</span>
+          <div class="c-card-info">
+            <div class="c-card-region">Medio Oriente · Emiratos</div>
+            <div class="c-card-nombre">Dubái</div>
+            <div class="c-card-footer">
+              <div class="c-card-precio">Desde $38,000 MXN</div>
+              <button class="c-card-btn">Cotizar →</button>
+            </div>
+          </div>
+        </a>
+
+        <a class="c-card" href="https://wa.me/529933045662?text=Hola%20GML%2C%20me%20interesa%20Barcelona%20🥂" target="_blank">
+          <img src="https://images.unsplash.com/photo-1511527661048-7fe73d85e9a4?w=600&q=80&auto=format&fit=crop" alt="Barcelona España">
+          <span class="c-card-flag">🇪🇸</span>
+          <div class="c-card-info">
+            <div class="c-card-region">Europa · España</div>
+            <div class="c-card-nombre">Barcelona</div>
+            <div class="c-card-footer">
+              <div class="c-card-precio">Desde $24,500 MXN</div>
+              <button class="c-card-btn">Cotizar →</button>
+            </div>
+          </div>
+        </a>
+
+        <a class="c-card" href="https://wa.me/529933045662?text=Hola%20GML%2C%20me%20interesa%20Maldivas%20🏝️" target="_blank">
+          <img src="https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=600&q=80&auto=format&fit=crop" alt="Maldivas">
+          <span class="c-card-flag">🇲🇻</span>
+          <div class="c-card-info">
+            <div class="c-card-region">Océano Índico · Maldivas</div>
+            <div class="c-card-nombre">Maldivas</div>
+            <div class="c-card-footer">
+              <div class="c-card-precio">Desde $55,000 MXN</div>
+              <button class="c-card-btn">Cotizar →</button>
+            </div>
+          </div>
+        </a>
+
+      </div>
+    </div>
+    <div class="carrusel-dots" id="c-dots"></div>
   </div>
 </section>
 
@@ -678,6 +874,55 @@ document.getElementById('btn-cta').addEventListener('click',()=>{
     setTimeout(()=>i.placeholder='Tu número de WhatsApp (993...)',2200);
   }
 });
+// CARRUSEL
+(function(){
+  const track = document.getElementById('c-track');
+  const dotsContainer = document.getElementById('c-dots');
+  if(!track) return;
+  const cards = track.querySelectorAll('.c-card');
+  const cardW = 320 + 24; // card width + gap
+  const visible = Math.floor((window.innerWidth - 96) / cardW) || 1;
+  const total = cards.length;
+  const maxIdx = total - visible;
+  let current = 0;
+  let autoTimer;
+
+  // Create dots
+  const numDots = Math.ceil(total / visible);
+  for(let i=0;i<numDots;i++){
+    const d = document.createElement('button');
+    d.className = 'c-dot' + (i===0?' active':'');
+    d.addEventListener('click',()=>goTo(i));
+    dotsContainer.appendChild(d);
+  }
+
+  function goTo(idx){
+    current = Math.max(0, Math.min(idx, maxIdx));
+    const offset = current * cardW;
+    track.style.transform = `translateX(-${offset}px)`;
+    document.querySelectorAll('.c-dot').forEach((d,i)=>{
+      d.classList.toggle('active', i === Math.round(current / visible));
+    });
+  }
+
+  function next(){ goTo(current + visible < maxIdx ? current + 1 : 0); }
+  function prev(){ goTo(current > 0 ? current - 1 : maxIdx); }
+
+  document.getElementById('c-next').addEventListener('click',()=>{resetAuto();next()});
+  document.getElementById('c-prev').addEventListener('click',()=>{resetAuto();prev()});
+
+  // Touch / swipe
+  let startX = 0;
+  track.addEventListener('touchstart', e=>{ startX = e.touches[0].clientX; },{passive:true});
+  track.addEventListener('touchend', e=>{
+    const diff = startX - e.changedTouches[0].clientX;
+    if(Math.abs(diff)>50){ resetAuto(); diff>0?next():prev(); }
+  });
+
+  function resetAuto(){ clearInterval(autoTimer); autoTimer = setInterval(next, 4000); }
+  resetAuto();
+})();
+
 document.querySelectorAll('a[href^="#"]').forEach(a=>{
   a.addEventListener('click',e=>{
     const t=document.querySelector(a.getAttribute('href'));
