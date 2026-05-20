@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GML Viajes · Panel de Administración</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&family=Pacifico&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --sol:#FFB800;--turquesa:#00C4CC;--turquesa-d:#009DA3;
+  --azul:#003D52;--azul-m:#006E91;--blanco:#fff;
+  --arena:#FFF8EC;--gris:#f0f4f8;--gris-b:#e2e8f0;
+  --texto:#1a3040;--muted:#64748b;--error:#ef4444;--ok:#22c55e;
+  --sans:'Nunito',sans-serif;--display:'Pacifico',cursive;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--gris);color:var(--texto);min-height:100vh}
+
+/* ══════════════════════════
+   LOGIN
+══════════════════════════ */
+#login-screen{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#003D52 0%,#006E91 50%,#00C4CC 100%);
+  position:relative;overflow:hidden;
+}
+#login-screen::before{content:'🌴';font-size:18rem;position:absolute;right:-3rem;bottom:-4rem;opacity:.06;line-height:1}
+#login-screen::after{content:'✈️';font-size:10rem;position:absolute;left:-2rem;top:-2rem;opacity:.05;line-height:1}
+
+.login-box{
+  background:#fff;border-radius:28px;padding:3rem 2.5rem;width:100%;max-width:400px;
+  box-shadow:0 24px 80px rgba(0,0,0,.3);position:relative;z-index:2;
+}
+.login-logo{text-align:center;margin-bottom:2rem}
+.login-logo-gml{font-family:var(--display);font-size:2.5rem;color:var(--sol)}
+.login-logo-sub{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-top:-.3rem}
+.login-title{font-size:1.1rem;font-weight:700;color:var(--azul);text-align:center;margin-bottom:.4rem}
+.login-sub{font-size:.85rem;color:var(--muted);text-align:center;margin-bottom:2rem}
+
+.form-group{margin-bottom:1.2rem}
+.form-label{display:block;font-size:.8rem;font-weight:700;color:var(--azul);margin-bottom:.4rem;letter-spacing:.05em}
+.form-input{width:100%;padding:.85rem 1rem;border:2px solid var(--gris-b);border-radius:12px;
+  font-family:var(--sans);font-size:.95rem;color:var(--texto);outline:none;
+  transition:border-color .2s,box-shadow .2s;background:#fafafa}
+.form-input:focus{border-color:var(--turquesa);box-shadow:0 0 0 3px rgba(0,196,204,.15);background:#fff}
+.pass-wrap{position:relative}
+.pass-toggle{position:absolute;right:1rem;top:50%;transform:translateY(-50%);
+  background:none;border:none;cursor:pointer;font-size:1.1rem;color:var(--muted)}
+
+.btn-login{width:100%;padding:1rem;background:linear-gradient(135deg,var(--turquesa),var(--azul-m));
+  color:#fff;border:none;border-radius:12px;font-family:var(--sans);font-size:1rem;
+  font-weight:800;cursor:pointer;transition:all .2s;margin-top:.5rem;
+  box-shadow:0 4px 16px rgba(0,196,204,.35)}
+.btn-login:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,196,204,.45)}
+.btn-login:active{transform:translateY(0)}
+
+.login-error{background:#fef2f2;border:1px solid #fecaca;color:var(--error);
+  padding:.75rem 1rem;border-radius:10px;font-size:.85rem;font-weight:600;
+  margin-top:1rem;text-align:center;display:none}
+.login-error.show{display:block}
+
+/* ══════════════════════════
+   DASHBOARD
+══════════════════════════ */
+#dashboard{display:none}
+
+/* Sidebar */
+.layout{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+.sidebar{background:var(--azul);padding:0;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto}
+.sidebar-logo{padding:1.8rem 1.5rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.08)}
+.sidebar-logo-gml{font-family:var(--display);font-size:1.6rem;color:var(--sol)}
+.sidebar-logo-sub{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-top:-.2rem}
+.sidebar-user{padding:1rem 1.5rem;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:.8rem}
+.user-avatar{width:36px;height:36px;border-radius:50%;background:var(--turquesa);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.user-name{font-size:.82rem;font-weight:700;color:#fff}
+.user-role{font-size:.68rem;color:rgba(255,255,255,.45);letter-spacing:.08em}
+
+.nav-section{padding:.8rem 1rem .3rem;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.3);font-weight:700}
+.nav-item{display:flex;align-items:center;gap:.7rem;padding:.75rem 1.5rem;color:rgba(255,255,255,.65);
+  text-decoration:none;font-size:.88rem;font-weight:600;cursor:pointer;transition:all .2s;border:none;background:none;width:100%;text-align:left}
+.nav-item:hover{background:rgba(255,255,255,.07);color:#fff}
+.nav-item.active{background:rgba(0,196,204,.18);color:var(--turquesa);border-right:3px solid var(--turquesa)}
+.nav-item .ico{font-size:1.1rem;width:22px;text-align:center}
+.sidebar-bottom{margin-top:auto;padding:1rem;border-top:1px solid rgba(255,255,255,.08)}
+.btn-logout{width:100%;padding:.7rem;background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);
+  color:#fca5a5;border-radius:10px;font-family:var(--sans);font-size:.82rem;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-logout:hover{background:rgba(239,68,68,.25);color:#fff}
+
+/* Main content */
+.main{padding:2rem;overflow-y:auto}
+.page{display:none}
+.page.active{display:block}
+
+/* Top bar */
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;flex-wrap:wrap;gap:1rem}
+.page-title{font-size:1.5rem;font-weight:800;color:var(--azul)}
+.page-sub{font-size:.85rem;color:var(--muted);margin-top:.2rem}
+
+/* Cards resumen */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;margin-bottom:2rem}
+.stat-card{background:#fff;border-radius:16px;padding:1.4rem;box-shadow:0 2px 12px rgba(0,61,82,.07);
+  border-left:4px solid var(--turquesa);transition:transform .2s}
+.stat-card:hover{transform:translateY(-3px)}
+.stat-card-ico{font-size:1.8rem;margin-bottom:.6rem}
+.stat-card-num{font-size:1.8rem;font-weight:800;color:var(--azul);line-height:1}
+.stat-card-label{font-size:.75rem;color:var(--muted);letter-spacing:.05em;margin-top:.3rem}
+.stat-card.sol{border-color:var(--sol)}
+.stat-card.coral{border-color:#f97316}
+.stat-card.verde{border-color:#22c55e}
+
+/* ══════════════════════════
+   COTIZADOR
+══════════════════════════ */
+.cotizador-wrap{background:#fff;border-radius:20px;box-shadow:0 2px 16px rgba(0,61,82,.08);overflow:hidden}
+.cotizador-header{background:linear-gradient(135deg,var(--azul),var(--azul-m));padding:1.8rem 2rem;display:flex;align-items:center;gap:1rem}
+.cotizador-header-ico{font-size:2rem}
+.cotizador-header h3{font-size:1.2rem;font-weight:800;color:#fff}
+.cotizador-header p{font-size:.82rem;color:rgba(255,255,255,.65);margin-top:.2rem}
+
+.cotizador-body{padding:2rem}
+
+/* Steps */
+.steps-bar{display:flex;align-items:center;margin-bottom:2.5rem;gap:0}
+.step-item{display:flex;align-items:center;flex:1}
+.step-circle{width:36px;height:36px;border-radius:50%;background:var(--gris-b);color:var(--muted);
+  font-weight:800;font-size:.9rem;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:all .3s;position:relative;z-index:1}
+.step-circle.done{background:var(--ok);color:#fff}
+.step-circle.active{background:var(--turquesa);color:#fff;box-shadow:0 0 0 4px rgba(0,196,204,.2)}
+.step-label{font-size:.7rem;font-weight:700;color:var(--muted);margin-top:.3rem;text-align:center;white-space:nowrap}
+.step-label.active{color:var(--turquesa)}
+.step-label.done{color:var(--ok)}
+.step-col{display:flex;flex-direction:column;align-items:center;flex:0 0 auto}
+.step-line{flex:1;height:2px;background:var(--gris-b);margin:0 .5rem;transition:background .3s;margin-bottom:1.2rem}
+.step-line.done{background:var(--ok)}
+
+/* Form styles */
+.form-section{margin-bottom:2rem}
+.form-section-title{font-size:1rem;font-weight:800;color:var(--azul);margin-bottom:1.2rem;
+  padding-bottom:.6rem;border-bottom:2px solid var(--gris-b);display:flex;align-items:center;gap:.5rem}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem}
+.grid-1{display:grid;grid-template-columns:1fr;gap:1rem}
+
+.f-group{display:flex;flex-direction:column;gap:.4rem}
+.f-label{font-size:.78rem;font-weight:700;color:var(--azul);letter-spacing:.04em}
+.f-input,.f-select,.f-textarea{padding:.75rem 1rem;border:2px solid var(--gris-b);border-radius:10px;
+  font-family:var(--sans);font-size:.9rem;color:var(--texto);outline:none;
+  transition:border-color .2s,box-shadow .2s;background:#fafafa;width:100%}
+.f-input:focus,.f-select:focus,.f-textarea:focus{border-color:var(--turquesa);
+  box-shadow:0 0 0 3px rgba(0,196,204,.12);background:#fff}
+.f-textarea{resize:vertical;min-height:90px}
+.f-select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2364748b' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 1rem center;padding-right:2.5rem}
+.f-hint{font-size:.72rem;color:var(--muted)}
+
+/* Viajantes dinámicos */
+.viajante-card{background:var(--gris);border:1px solid var(--gris-b);border-radius:14px;padding:1.2rem;margin-bottom:.8rem;position:relative}
+.viajante-card-title{font-size:.85rem;font-weight:800;color:var(--azul);margin-bottom:.8rem;display:flex;align-items:center;gap:.5rem}
+.btn-remove-v{position:absolute;top:.8rem;right:.8rem;background:#fef2f2;border:1px solid #fecaca;
+  color:var(--error);width:28px;height:28px;border-radius:8px;font-size:.9rem;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.btn-remove-v:hover{background:var(--error);color:#fff}
+.menor-badge{background:rgba(255,184,0,.15);border:1px solid rgba(255,184,0,.4);
+  color:#92640a;padding:.2rem .7rem;border-radius:50px;font-size:.68rem;font-weight:700}
+
+.btn-add-v{display:flex;align-items:center;gap:.5rem;padding:.7rem 1.2rem;
+  background:rgba(0,196,204,.08);border:2px dashed rgba(0,196,204,.4);border-radius:10px;
+  color:var(--turquesa-d);font-family:var(--sans);font-size:.85rem;font-weight:700;
+  cursor:pointer;transition:all .2s;width:100%;justify-content:center}
+.btn-add-v:hover{background:rgba(0,196,204,.15);border-color:var(--turquesa)}
+
+/* Fotos hotel */
+.fotos-upload-area{border:2px dashed var(--gris-b);border-radius:14px;padding:2rem;
+  text-align:center;cursor:pointer;transition:all .2s;background:#fafafa;position:relative}
+.fotos-upload-area:hover,.fotos-upload-area.dragover{border-color:var(--turquesa);background:rgba(0,196,204,.04)}
+.fotos-upload-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upload-ico{font-size:2.5rem;margin-bottom:.8rem}
+.upload-text{font-size:.9rem;font-weight:700;color:var(--azul);margin-bottom:.3rem}
+.upload-sub{font-size:.78rem;color:var(--muted)}
+
+.fotos-preview{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:.8rem;margin-top:1rem}
+.foto-thumb{position:relative;border-radius:10px;overflow:hidden;aspect-ratio:4/3;background:var(--gris-b)}
+.foto-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.foto-thumb-del{position:absolute;top:.3rem;right:.3rem;background:rgba(239,68,68,.9);color:#fff;
+  border:none;border-radius:6px;width:22px;height:22px;font-size:.7rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center}
+.foto-nombre{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.6);
+  color:#fff;font-size:.6rem;padding:.2rem .4rem;text-overflow:ellipsis;overflow:hidden;white-space:nowrap}
+
+/* Resumen cotización */
+.resumen-box{background:linear-gradient(135deg,#f0f9ff,#e0fafa);border:1px solid rgba(0,196,204,.2);
+  border-radius:16px;padding:1.8rem}
+.resumen-title{font-size:1.1rem;font-weight:800;color:var(--azul);margin-bottom:1.5rem;display:flex;align-items:center;gap:.5rem}
+.resumen-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem}
+.resumen-item{background:#fff;border-radius:12px;padding:1rem;border:1px solid rgba(0,196,204,.15)}
+.resumen-item-label{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:.3rem}
+.resumen-item-val{font-size:.95rem;font-weight:700;color:var(--azul)}
+.resumen-viajantes{background:#fff;border-radius:12px;padding:1rem;border:1px solid rgba(0,196,204,.15);margin-bottom:1rem}
+.resumen-fotos-grid{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.8rem}
+.resumen-foto{width:60px;height:60px;border-radius:8px;overflow:hidden;flex-shrink:0;border:2px solid rgba(0,196,204,.2)}
+.resumen-foto img{width:100%;height:100%;object-fit:cover}
+
+.precio-final-box{background:var(--azul);border-radius:14px;padding:1.2rem 1.5rem;
+  display:flex;justify-content:space-between;align-items:center;margin:1.5rem 0}
+.precio-final-label{color:rgba(255,255,255,.7);font-size:.82rem;font-weight:600}
+.precio-final-val{font-family:var(--display);font-size:2rem;color:var(--sol)}
+
+/* Botones navegación */
+.cotizador-nav{display:flex;justify-content:space-between;align-items:center;margin-top:2rem;padding-top:1.5rem;border-top:2px solid var(--gris-b)}
+.btn-prev-step{padding:.75rem 1.5rem;background:var(--gris);border:2px solid var(--gris-b);
+  color:var(--muted);border-radius:10px;font-family:var(--sans);font-size:.88rem;
+  font-weight:700;cursor:pointer;transition:all .2s}
+.btn-prev-step:hover{border-color:var(--azul);color:var(--azul)}
+.btn-next-step{padding:.75rem 2rem;background:linear-gradient(135deg,var(--turquesa),var(--azul-m));
+  color:#fff;border:none;border-radius:10px;font-family:var(--sans);font-size:.88rem;
+  font-weight:800;cursor:pointer;transition:all .2s;box-shadow:0 4px 16px rgba(0,196,204,.3);
+  display:flex;align-items:center;gap:.5rem}
+.btn-next-step:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,196,204,.4)}
+
+.btn-enviar-cot{padding:1rem 2.5rem;background:linear-gradient(135deg,var(--sol),#FF9A00);
+  color:var(--azul);border:none;border-radius:12px;font-family:var(--sans);font-size:1rem;
+  font-weight:800;cursor:pointer;transition:all .2s;box-shadow:0 4px 20px rgba(255,184,0,.4);
+  display:flex;align-items:center;gap:.6rem}
+.btn-enviar-cot:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(255,184,0,.5)}
+.btn-enviar-wa{padding:1rem 2rem;background:#25D366;color:#fff;border:none;border-radius:12px;
+  font-family:var(--sans);font-size:.95rem;font-weight:800;cursor:pointer;transition:all .2s;
+  box-shadow:0 4px 16px rgba(37,211,102,.35);display:flex;align-items:center;gap:.6rem}
+.btn-enviar-wa:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(37,211,102,.45)}
+
+/* Historial */
+.historial-table{width:100%;border-collapse:collapse;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 2px 12px rgba(0,61,82,.07)}
+.historial-table th{background:var(--azul);color:rgba(255,255,255,.8);font-size:.72rem;
+  letter-spacing:.1em;text-transform:uppercase;padding:.9rem 1.2rem;text-align:left;font-weight:700}
+.historial-table td{padding:.9rem 1.2rem;border-bottom:1px solid var(--gris-b);font-size:.88rem;color:var(--texto);vertical-align:middle}
+.historial-table tr:last-child td{border-bottom:none}
+.historial-table tr:hover td{background:var(--gris)}
+.badge{padding:.25rem .7rem;border-radius:50px;font-size:.68rem;font-weight:700}
+.badge-ok{background:#dcfce7;color:#166534}
+.badge-pend{background:#fef3c7;color:#92400e}
+.badge-env{background:#e0f2fe;color:#075985}
+.btn-tabla{padding:.35rem .8rem;border-radius:8px;font-size:.75rem;font-weight:700;
+  cursor:pointer;border:none;font-family:var(--sans);transition:all .2s}
+.btn-tabla.ver{background:rgba(0,196,204,.1);color:var(--turquesa-d)}
+.btn-tabla.ver:hover{background:var(--turquesa);color:#fff}
+.btn-tabla.wa{background:rgba(37,211,102,.1);color:#166534}
+.btn-tabla.wa:hover{background:#25D366;color:#fff}
+
+/* Toast */
+.toast{position:fixed;top:1.5rem;right:1.5rem;z-index:9999;background:var(--azul);color:#fff;
+  padding:1rem 1.5rem;border-radius:14px;font-size:.9rem;font-weight:700;
+  box-shadow:0 8px 32px rgba(0,0,0,.25);transform:translateX(120%);transition:transform .4s cubic-bezier(.25,.46,.45,.94);
+  display:flex;align-items:center;gap:.6rem;max-width:320px}
+.toast.show{transform:translateX(0)}
+.toast.ok{border-left:4px solid var(--ok)}
+.toast.error{border-left:4px solid var(--error)}
+
+/* Modal */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:none;
+  align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.modal-bg.open{display:flex}
+.modal{background:#fff;border-radius:20px;padding:2rem;max-width:560px;width:95%;
+  box-shadow:0 24px 80px rgba(0,0,0,.3);max-height:85vh;overflow-y:auto}
+.modal-title{font-size:1.1rem;font-weight:800;color:var(--azul);margin-bottom:1.5rem;display:flex;align-items:center;gap:.5rem}
+.modal-close{margin-left:auto;background:var(--gris);border:none;width:32px;height:32px;
+  border-radius:8px;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center}
+
+/* Responsive */
+@media(max-width:900px){
+  .layout{grid-template-columns:1fr}
+  .sidebar{position:fixed;left:-260px;z-index:200;transition:left .3s;height:100vh}
+  .sidebar.open{left:0}
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .grid-2,.grid-3{grid-template-columns:1fr}
+  .resumen-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- MODAL VER COTIZACIÓN -->
+<div class="modal-bg" id="modal-bg">
+  <div class="modal">
+    <div class="modal-title">📋 Detalle de Cotización <button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     LOGIN
+══════════════════════════════════ -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="login-logo-gml">GML</div>
+      <div class="login-logo-sub">Viajes y Tours · Admin</div>
+    </div>
+    <div class="login-title">Bienvenida de vuelta 👋</div>
+    <div class="login-sub">Accede a tu panel de administración</div>
+
+    <div class="form-group">
+      <label class="form-label">Usuario</label>
+      <input class="form-input" type="text" id="l-user" placeholder="tu usuario" autocomplete="username">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Contraseña</label>
+      <div class="pass-wrap">
+        <input class="form-input" type="password" id="l-pass" placeholder="••••••••" autocomplete="current-password">
+        <button class="pass-toggle" type="button" id="pass-toggle">👁️</button>
+      </div>
+    </div>
+    <button class="btn-login" id="btn-login">Entrar al panel →</button>
+    <div class="login-error" id="login-error">❌ Usuario o contraseña incorrectos</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     DASHBOARD
+══════════════════════════════════ -->
+<div id="dashboard">
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-gml">GML</div>
+        <div class="sidebar-logo-sub">Panel de Administración</div>
+      </div>
+      <div class="sidebar-user">
+        <div class="user-avatar">👩‍✈️</div>
+        <div>
+          <div class="user-name">GML Viajes</div>
+          <div class="user-role">Administradora</div>
+        </div>
+      </div>
+
+      <div class="nav-section">Principal</div>
+      <button class="nav-item active" onclick="showPage('inicio')">
+        <span class="ico">🏠</span> Inicio
+      </button>
+
+      <div class="nav-section">Cotizaciones</div>
+      <button class="nav-item" onclick="showPage('cotizador')">
+        <span class="ico">✏️</span> Nueva Cotización
+      </button>
+      <button class="nav-item" onclick="showPage('historial')">
+        <span class="ico">📋</span> Historial
+      </button>
+
+      <div class="nav-section">Sitio Web</div>
+      <button class="nav-item" onclick="window.open('index.html','_blank')">
+        <span class="ico">🌐</span> Ver mi sitio
+      </button>
+
+      <div class="sidebar-bottom">
+        <button class="btn-logout" onclick="logout()">🚪 Cerrar sesión</button>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+
+      <!-- PÁGINA: INICIO -->
+      <div class="page active" id="page-inicio">
+        <div class="topbar">
+          <div>
+            <div class="page-title">¡Buen día, GML! ☀️</div>
+            <div class="page-sub">Aquí tienes un resumen de tu actividad</div>
+          </div>
+          <button class="btn-next-step" onclick="showPage('cotizador')">✏️ Nueva cotización</button>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-card-ico">📋</div>
+            <div class="stat-card-num" id="stat-total">0</div>
+            <div class="stat-card-label">Cotizaciones totales</div>
+          </div>
+          <div class="stat-card sol">
+            <div class="stat-card-ico">⏳</div>
+            <div class="stat-card-num" id="stat-pend">0</div>
+            <div class="stat-card-label">Pendientes</div>
+          </div>
+          <div class="stat-card verde">
+            <div class="stat-card-ico">✅</div>
+            <div class="stat-card-num" id="stat-conf">0</div>
+            <div class="stat-card-label">Confirmadas</div>
+          </div>
+          <div class="stat-card coral">
+            <div class="stat-card-ico">💬</div>
+            <div class="stat-card-num" id="stat-env">0</div>
+            <div class="stat-card-label">Enviadas</div>
+          </div>
+        </div>
+
+        <!-- Últimas cotizaciones -->
+        <div style="background:#fff;border-radius:16px;padding:1.5rem;box-shadow:0 2px 12px rgba(0,61,82,.07)">
+          <div style="font-size:1rem;font-weight:800;color:var(--azul);margin-bottom:1.2rem">📬 Últimas cotizaciones</div>
+          <div id="ultimas-cots"><p style="color:var(--muted);font-size:.9rem">Aún no hay cotizaciones. ¡Crea la primera!</p></div>
+        </div>
+      </div>
+
+      <!-- PÁGINA: COTIZADOR -->
+      <div class="page" id="page-cotizador">
+        <div class="topbar">
+          <div>
+            <div class="page-title">✏️ Nueva Cotización</div>
+            <div class="page-sub">Completa los datos del viaje para generar la cotización</div>
+          </div>
+        </div>
+
+        <div class="cotizador-wrap">
+          <div class="cotizador-header">
+            <div class="cotizador-header-ico">🌊</div>
+            <div>
+              <h3>Cotizador GML Viajes y Tours</h3>
+              <p>Llena todos los pasos para generar la cotización completa</p>
+            </div>
+          </div>
+          <div class="cotizador-body">
+
+            <!-- STEPS BAR -->
+            <div class="steps-bar" id="steps-bar">
+              <div class="step-col"><div class="step-circle active" id="sc1">1</div><div class="step-label active" id="sl1">Viajantes</div></div>
+              <div class="step-line" id="sline1"></div>
+              <div class="step-col"><div class="step-circle" id="sc2">2</div><div class="step-label" id="sl2">Fechas y Destino</div></div>
+              <div class="step-line" id="sline2"></div>
+              <div class="step-col"><div class="step-circle" id="sc3">3</div><div class="step-label" id="sl3">Hotel y Fotos</div></div>
+              <div class="step-line" id="sline3"></div>
+              <div class="step-col"><div class="step-circle" id="sc4">4</div><div class="step-label" id="sl4">Precio y Extras</div></div>
+              <div class="step-line" id="sline4"></div>
+              <div class="step-col"><div class="step-circle" id="sc5">5</div><div class="step-label" id="sl5">Resumen</div></div>
+            </div>
+
+            <!-- STEP 1: VIAJANTES -->
+            <div id="step-1">
+              <div class="form-section">
+                <div class="form-section-title">👤 Datos del cliente</div>
+                <div class="grid-2">
+                  <div class="f-group">
+                    <label class="f-label">Nombre completo del cliente</label>
+                    <input class="f-input" id="c-nombre" type="text" placeholder="Ej. María García López">
+                  </div>
+                  <div class="f-group">
+                    <label class="f-label">WhatsApp del cliente</label>
+                    <input class="f-input" id="c-wa" type="tel" placeholder="993 123 4567">
+                  </div>
+                  <div class="f-group">
+                    <label class="f-label">Email (opcional)</label>
+                    <input class="f-input" id="c-email" type="email" placeholder="correo@ejemplo.com">
+                  </div>
+                  <div class="f-group">
+                    <label class="f-label">Ciudad de origen</label>
+                    <input class="f-input" id="c-ciudad" type="text" placeholder="Ej. Villahermosa">
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-section">
+                <div class="form-section-title">✈️ Viajantes</div>
+                <div id="viajantes-list"></div>
+                <button class="btn-add-v" onclick="addViajante()">➕ Agregar viajante</button>
+              </div>
+
+              <div class="cotizador-nav">
+                <div></div>
+                <button class="btn-next-step" onclick="nextStep(1)">Siguiente: Fechas y Destino →</button>
+              </div>
+            </div>
+
+            <!-- STEP 2: FECHAS Y DESTINO -->
+            <div id="step-2" style="display:none">
+              <div class="form-section">
+                <div class="form-section-title">📅 Fechas del viaje</div>
+                <div class="grid-3">
+                  <div class="f-group">
+                    <label class="f-label">Fecha de entrada</label>
+                    <input class="f-input" id="f-entrada" type="date">
+                  </div>
+                  <div class="f-group">
+                    <label class="f-label">Fecha de salida</label>
+                    <input class="f-input" id="f-salida" type="date">
+                  </div>
+                  <div class="f-group">
+                    <label class="f-label">Noches</label>
+                    <input class="f-input" id="f-noches" type="text" placeholder="Se calcula automático" readonly style="background:#f1f5f9;color:var(--muted)">
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-section">
+                <div class="form-section-title">🗺️ Destino</div>
+                <div class="grid-2">
+                  <div class="f-group">
+                    <label class="f-label">Destino principal</label>
+                    <select class="f-select" id="f-destino">
+                      <option value="">— Selecciona un destino —</option>
+                      <optgroup label="🇲🇽 Caribe Mexicano">
+                        <option>Playa del Carmen</option>
+                        <option>Cancún</option>
+                        <option>Puerto Morelos</option>
+                        <option>Isla Mujeres</option>
+                        <option>Cozumel</option>
+                        <option>Tulum</option>
+                        <option>Holbox</option>
+                      </optgroup>
+                      <optgroup label="🌍 Internacional">
+                        <option>París, Francia</option>
+                        <option>Roma, Italia</option>
+                        <option>Barcelona, España</option>
+                        <option>Santorini, Grecia</option>
+                        <option>Tokio, Japón</option>
+                        <option>Bali, Indonesia</option>
+                        <option>Nueva York, EUA</option>
+                        <option>Dubái, Emiratos</option>
+                        <option>Maldivas</option>
+                        <option>Machu Picchu, Perú</option>
+                      </optgroup>
+                      <option value="otro">Otro (escribir abajo)</option>
+                    </select>
+                  </div>
+                  <div class="f-group">
+                    <label class="f-label">Destino personalizado (si aplica)</label>
+                    <input class="f-input" id="f-destino-custom" type="text" placeholder="Escribe el destino">
+                  </div>
+                  <div class="f-group">
+                    <label class="f-label">Tipo de viaje</label>
+                    <select class="f-select" id="f-tipo">
+                      <option>Vacaciones en familia</option>
+                      <option>Luna de miel / Romántico</option>
+                      <option>Viaje de amigos / Grupo</option>
+                      <option>Viaje de pareja</option>
+                      <option>Viaje solo</option>
+                      <option>Viaje de negocios</option>
+                      <option>Despedida de soltero/a</option>
+                    </select>
+                  </div>
+                  <div class="f-group">
+                    <label class="f-label">Tipo de plan</label>
+                    <select class="f-select" id="f-plan">
+                      <option>Todo incluido</option>
+                      <option>Solo hotel</option>
+                      <option>Hotel + Vuelo</option>
+                      <option>Hotel + Vuelo + Traslados</option>
+                      <option>Paquete completo (todo)</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="f-group" style="margin-top:1rem">
+                  <label class="f-label">Notas adicionales del destino</label>
+                  <textarea class="f-textarea" id="f-notas-destino" placeholder="Ej. prefieren habitación con vista al mar, luna de miel..."></textarea>
+                </div>
+              </div>
+
+              <div class="cotizador-nav">
+                <button class="btn-prev-step" onclick="prevStep(2)">← Atrás</button>
+                <button class="btn-next-step" onclick="nextStep(2)">Siguiente: Hotel y Fotos →</button>
+              </div>
+            </div>
+
+            <!-- STEP 3: HOTEL Y FOTOS -->
+            <div id="step-3" style="display:none">
+              <div class="form-section">
+                <div class="form-section-title">🏨 Datos del hotel</div>
+                <div class="grid-2">
+                  <div class="f-group">
+                    <label class="f-label">Nombre del hotel</label>
+                    <input class="f-input" id="h-nombre" type="text" placeholder="Ej. Grand Hyatt Cancún">
+                  </div>
+                  <div class="f-group">
+                    <label class="f-label">Categoría</label>
+                    <select class="f-select" id="h-categoria">
+                      <option>⭐⭐⭐ 3 estrellas</option>
+                      <option>⭐⭐⭐⭐ 4 estrellas</option>
+                      <option selected>⭐⭐⭐⭐⭐ 5 estrellas</option>
+                      <option>🏅 Gran Turismo / Lujo</option>
+                      <option>🏡 Boutique / Romántico</option>
+                    </select>
+                  </div>
+                  <div class="f-group">
+                    <label class="f-label">Tipo de habitación</label>
+                    <input class="f-input" id="h-habitacion" type="text" placeholder="Ej. Suite Junior Vista al Mar">
+                  </div>
+                  <div class="f-group">
+                    <label class="f-label">Amenidades incluidas</label>
+                    <input class="f-input" id="h-amenidades" type="text" placeholder="Ej. Desayuno, piscina, spa...">
+                  </div>
+                </div>
+                <div class="f-group" style="margin-top:1rem">
+                  <label class="f-label">Descripción del hotel</label>
+                  <textarea class="f-textarea" id="h-desc" placeholder="Describe el hotel, ubicación, experiencia..."></textarea>
+                </div>
+              </div>
+
+              <div class="form-section">
+                <div class="form-section-title">📸 Fotos del hotel</div>
+                <p class="f-hint" style="margin-bottom:1rem">Agrega fotos reales del hotel para incluirlas en la cotización. Acepta JPG, PNG, WEBP.</p>
+                <div class="fotos-upload-area" id="drop-area">
+                  <input type="file" id="fotos-input" accept="image/*" multiple onchange="handleFotos(this.files)">
+                  <div class="upload-ico">📷</div>
+                  <div class="upload-text">Arrastra las fotos aquí o haz clic para seleccionar</div>
+                  <div class="upload-sub">JPG, PNG, WEBP · Máximo 10 fotos</div>
+                </div>
+                <div class="fotos-preview" id="fotos-preview"></div>
+              </div>
+
+              <div class="cotizador-nav">
+                <button class="btn-prev-step" onclick="prevStep(3)">← Atrás</button>
+                <button class="btn-next-step" onclick="nextStep(3)">Siguiente: Precio y Extras →</button>
+              </div>
+            </div>
+
+            <!-- STEP 4: PRECIO Y EXTRAS -->
+            <div id="step-4" style="display:none">
+              <div class="form-section">
+                <div class="form-section-title">💰 Precio del paquete</div>
+                <div class="grid-3">
+                  <div class="f-group">
+                    <label class="f-label">Precio total (MXN)</label>
+                    <input class="f-input" id="p-total" type="number" placeholder="0.00" oninput="calcPrecio()">
+                  </div>
+                  <div class="f-group">
+                    <label class="f-label">Anticipo requerido (MXN)</label>
+                    <input class="f-input" id="p-anticipo" type="number" placeholder="0.00">
+                  </div>
+                  <div class="f-group">
+                    <label class="f-label">Moneda</label>
+                    <select class="f-select" id="p-moneda">
+                      <option>MXN – Pesos mexicanos</option>
+                      <option>USD – Dólares</option>
+                      <option>EUR – Euros</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="grid-2" style="margin-top:1rem">
+                  <div class="f-group">
+                    <label class="f-label">¿Incluye vuelo?</label>
+                    <select class="f-select" id="p-vuelo">
+                      <option>✅ Sí incluye vuelo</option>
+                      <option>❌ No incluye vuelo</option>
+                      <option>🔄 A cotizar por separado</option>
+                    </select>
+                  </div>
+                  <div class="f-group">
+                    <label class="f-label">¿Incluye seguro de viaje?</label>
+                    <select class="f-select" id="p-seguro">
+                      <option>✅ Sí incluye seguro</option>
+                      <option>❌ No incluye seguro</option>
+                      <option>🔄 Opcional (+costo)</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-section">
+                <div class="form-section-title">🎁 Extras y condiciones</div>
+                <div class="f-group">
+                  <label class="f-label">¿Qué incluye el paquete?</label>
+                  <textarea class="f-textarea" id="p-incluye" placeholder="Ej. 5 noches en hotel 5*, desayuno buffet, traslados, snorkel en arrecife..."></textarea>
+                </div>
+                <div class="f-group" style="margin-top:1rem">
+                  <label class="f-label">¿Qué NO incluye?</label>
+                  <textarea class="f-textarea" id="p-noincluye" placeholder="Ej. Gastos personales, propinas, tours opcionales..."></textarea>
+                </div>
+                <div class="f-group" style="margin-top:1rem">
+                  <label class="f-label">Condiciones y política de cancelación</label>
+                  <textarea class="f-textarea" id="p-condiciones" placeholder="Ej. Reserva con 50% de anticipo, cancelación con 30 días de anticipación..."></textarea>
+                </div>
+                <div class="f-group" style="margin-top:1rem">
+                  <label class="f-label">Vigencia de la cotización</label>
+                  <input class="f-input" id="p-vigencia" type="date">
+                </div>
+              </div>
+
+              <div class="cotizador-nav">
+                <button class="btn-prev-step" onclick="prevStep(4)">← Atrás</button>
+                <button class="btn-next-step" onclick="nextStep(4)">Ver Resumen Final →</button>
+              </div>
+            </div>
+
+            <!-- STEP 5: RESUMEN -->
+            <div id="step-5" style="display:none">
+              <div id="resumen-contenido"></div>
+              <div class="cotizador-nav">
+                <button class="btn-prev-step" onclick="prevStep(5)">← Editar</button>
+                <div style="display:flex;gap:.8rem;flex-wrap:wrap">
+                  <button class="btn-enviar-wa" onclick="enviarWA()">💬 Enviar por WhatsApp</button>
+                  <button class="btn-enviar-cot" onclick="guardarCotizacion()">💾 Guardar Cotización</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- PÁGINA: HISTORIAL -->
+      <div class="page" id="page-historial">
+        <div class="topbar">
+          <div>
+            <div class="page-title">📋 Historial de Cotizaciones</div>
+            <div class="page-sub">Todas las cotizaciones generadas</div>
+          </div>
+          <button class="btn-next-step" onclick="showPage('cotizador')">✏️ Nueva cotización</button>
+        </div>
+        <table class="historial-table" id="historial-tabla">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Cliente</th>
+              <th>Destino</th>
+              <th>Fechas</th>
+              <th>Viajantes</th>
+              <th>Total</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="historial-body">
+            <tr><td colspan="8" style="text-align:center;color:var(--muted);padding:2rem">Aún no hay cotizaciones guardadas</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════
+// CONFIGURACIÓN — CAMBIA AQUÍ TU ACCESO
+// ══════════════════════════════════════
+const CREDENCIALES = {
+  usuario: 'gmlviajes',
+  password: 'GML2025@'
+};
+const WA_NUMBER = '529933045662';
+
+// ══════════════════════════════════════
+// LOGIN
+// ══════════════════════════════════════
+document.getElementById('btn-login').addEventListener('click', login);
+document.getElementById('l-pass').addEventListener('keydown', e => { if(e.key==='Enter') login(); });
+document.getElementById('pass-toggle').addEventListener('click', () => {
+  const inp = document.getElementById('l-pass');
+  const btn = document.getElementById('pass-toggle');
+  if(inp.type==='password'){ inp.type='text'; btn.textContent='🙈'; }
+  else { inp.type='password'; btn.textContent='👁️'; }
+});
+
+function login(){
+  const u = document.getElementById('l-user').value.trim();
+  const p = document.getElementById('l-pass').value.trim();
+  const err = document.getElementById('login-error');
+  if(u===CREDENCIALES.usuario && p===CREDENCIALES.password){
+    sessionStorage.setItem('gml_auth','1');
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('dashboard').style.display='block';
+    updateStats();
+    renderHistorial();
+  } else {
+    err.classList.add('show');
+    document.getElementById('l-pass').value='';
+    setTimeout(()=>err.classList.remove('show'), 3000);
+  }
+}
+
+function logout(){
+  sessionStorage.removeItem('gml_auth');
+  location.reload();
+}
+
+// Verificar si ya está logueado
+if(sessionStorage.getItem('gml_auth')==='1'){
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('dashboard').style.display='block';
+}
+
+// ══════════════════════════════════════
+// NAVEGACIÓN PÁGINAS
+// ══════════════════════════════════════
+function showPage(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>{
+    if(n.textContent.toLowerCase().includes(name==='inicio'?'inicio':name==='cotizador'?'cotización':name==='historial'?'historial':''))
+      n.classList.add('active');
+  });
+  if(name==='historial'){ renderHistorial(); updateStats(); }
+  if(name==='inicio'){ updateStats(); renderUltimas(); }
+}
+
+// ══════════════════════════════════════
+// VIAJANTES DINÁMICOS
+// ══════════════════════════════════════
+let viajantes = [];
+let vIdCounter = 0;
+
+function addViajante(){
+  const id = ++vIdCounter;
+  viajantes.push({ id, nombre:'', tipo:'adulto', edad:'' });
+  renderViajantes();
+}
+
+function removeViajante(id){
+  viajantes = viajantes.filter(v=>v.id!==id);
+  renderViajantes();
+}
+
+function renderViajantes(){
+  const list = document.getElementById('viajantes-list');
+  if(viajantes.length===0){
+    list.innerHTML='<p style="color:var(--muted);font-size:.85rem;margin-bottom:1rem">Agrega los viajantes del paquete</p>';
+    return;
+  }
+  list.innerHTML = viajantes.map((v,i)=>`
+    <div class="viajante-card">
+      <div class="viajante-card-title">
+        ${v.tipo==='menor'?'👶':'🧑'} Viajante ${i+1}
+        ${v.tipo==='menor'?`<span class="menor-badge">MENOR</span>`:''}
+      </div>
+      <button class="btn-remove-v" onclick="removeViajante(${v.id})">✕</button>
+      <div class="grid-3">
+        <div class="f-group">
+          <label class="f-label">Nombre completo</label>
+          <input class="f-input" type="text" placeholder="Nombre del viajante" value="${v.nombre}"
+            onchange="updateViajante(${v.id},'nombre',this.value)">
+        </div>
+        <div class="f-group">
+          <label class="f-label">Tipo</label>
+          <select class="f-select" onchange="updateViajante(${v.id},'tipo',this.value);renderViajantes()">
+            <option value="adulto" ${v.tipo==='adulto'?'selected':''}>👤 Adulto</option>
+            <option value="menor" ${v.tipo==='menor'?'selected':''}>👶 Menor de edad</option>
+          </select>
+        </div>
+        ${v.tipo==='menor'?`
+        <div class="f-group">
+          <label class="f-label">Edad del menor</label>
+          <input class="f-input" type="number" min="0" max="17" placeholder="Edad" value="${v.edad}"
+            onchange="updateViajante(${v.id},'edad',this.value)">
+        </div>`:`<div></div>`}
+      </div>
+    </div>
+  `).join('');
+}
+
+function updateViajante(id, field, val){
+  const v = viajantes.find(x=>x.id===id);
+  if(v) v[field]=val;
+}
+
+// Inicializar con un viajante
+addViajante();
+
+// ══════════════════════════════════════
+// STEPS DEL COTIZADOR
+// ══════════════════════════════════════
+let currentStep = 1;
+
+function nextStep(from){
+  if(from===1 && !document.getElementById('c-nombre').value.trim()){
+    showToast('Ingresa el nombre del cliente','error'); return;
+  }
+  if(from===2 && !document.getElementById('f-destino').value){
+    showToast('Selecciona un destino','error'); return;
+  }
+  if(from===3 && !document.getElementById('h-nombre').value.trim()){
+    showToast('Ingresa el nombre del hotel','error'); return;
+  }
+  if(from===5) return;
+  goStep(from+1);
+}
+
+function prevStep(from){ if(from>1) goStep(from-1); }
+
+function goStep(n){
+  document.getElementById('step-'+currentStep).style.display='none';
+  currentStep=n;
+  document.getElementById('step-'+n).style.display='block';
+  if(n===5) buildResumen();
+  updateStepsBar();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function updateStepsBar(){
+  for(let i=1;i<=5;i++){
+    const c=document.getElementById('sc'+i);
+    const l=document.getElementById('sl'+i);
+    if(i<currentStep){ c.className='step-circle done'; c.textContent='✓'; l.className='step-label done'; }
+    else if(i===currentStep){ c.className='step-circle active'; c.textContent=i; l.className='step-label active'; }
+    else { c.className='step-circle'; c.textContent=i; l.className='step-label'; }
+    if(i<5){ const line=document.getElementById('sline'+i); line.className='step-line'+(i<currentStep?' done':''); }
+  }
+}
+
+// ══════════════════════════════════════
+// FECHAS — CALCULAR NOCHES
+// ══════════════════════════════════════
+document.addEventListener('change', e=>{
+  if(e.target.id==='f-entrada'||e.target.id==='f-salida'){
+    const entrada=document.getElementById('f-entrada').value;
+    const salida=document.getElementById('f-salida').value;
+    if(entrada && salida){
+      const diff=(new Date(salida)-new Date(entrada))/(1000*60*60*24);
+      document.getElementById('f-noches').value = diff>0?diff+' noches':'Fecha inválida';
+    }
+  }
+});
+
+// ══════════════════════════════════════
+// FOTOS DEL HOTEL
+// ══════════════════════════════════════
+let fotosData = [];
+
+function handleFotos(files){
+  Array.from(files).slice(0,10-fotosData.length).forEach(file=>{
+    const reader=new FileReader();
+    reader.onload=e=>{ fotosData.push({src:e.target.result,nombre:file.name}); renderFotos(); };
+    reader.readAsDataURL(file);
+  });
+}
+
+function renderFotos(){
+  const prev=document.getElementById('fotos-preview');
+  prev.innerHTML=fotosData.map((f,i)=>`
+    <div class="foto-thumb">
+      <img src="${f.src}" alt="${f.nombre}">
+      <button class="foto-thumb-del" onclick="removeFoto(${i})">✕</button>
+      <div class="foto-nombre">${f.nombre}</div>
+    </div>
+  `).join('');
+}
+
+function removeFoto(i){ fotosData.splice(i,1); renderFotos(); }
+
+// Drag & Drop
+const dropArea=document.getElementById('drop-area');
+['dragenter','dragover'].forEach(ev=>dropArea.addEventListener(ev,e=>{e.preventDefault();dropArea.classList.add('dragover')}));
+['dragleave','drop'].forEach(ev=>dropArea.addEventListener(ev,e=>{e.preventDefault();dropArea.classList.remove('dragover')}));
+dropArea.addEventListener('drop',e=>{ handleFotos(e.dataTransfer.files); });
+
+// ══════════════════════════════════════
+// PRECIO
+// ══════════════════════════════════════
+function calcPrecio(){}
+
+function fmtMoney(n){
+  return Number(n||0).toLocaleString('es-MX',{style:'currency',currency:'MXN'});
+}
+
+// ══════════════════════════════════════
+// RESUMEN
+// ══════════════════════════════════════
+function buildResumen(){
+  const nombre=document.getElementById('c-nombre').value||'—';
+  const wa=document.getElementById('c-wa').value||'—';
+  const email=document.getElementById('c-email').value||'—';
+  const ciudad=document.getElementById('c-ciudad').value||'—';
+  const entrada=document.getElementById('f-entrada').value||'—';
+  const salida=document.getElementById('f-salida').value||'—';
+  const noches=document.getElementById('f-noches').value||'—';
+  const destino=document.getElementById('f-destino').value||document.getElementById('f-destino-custom').value||'—';
+  const tipo=document.getElementById('f-tipo').value||'—';
+  const plan=document.getElementById('f-plan').value||'—';
+  const notasDest=document.getElementById('f-notas-destino').value||'—';
+  const hotel=document.getElementById('h-nombre').value||'—';
+  const categ=document.getElementById('h-categoria').value||'—';
+  const hab=document.getElementById('h-habitacion').value||'—';
+  const ameni=document.getElementById('h-amenidades').value||'—';
+  const descHotel=document.getElementById('h-desc').value||'—';
+  const total=document.getElementById('p-total').value||'0';
+  const anticipo=document.getElementById('p-anticipo').value||'0';
+  const moneda=document.getElementById('p-moneda').value||'MXN';
+  const vuelo=document.getElementById('p-vuelo').value||'—';
+  const seguro=document.getElementById('p-seguro').value||'—';
+  const incluye=document.getElementById('p-incluye').value||'—';
+  const noincluye=document.getElementById('p-noincluye').value||'—';
+  const condiciones=document.getElementById('p-condiciones').value||'—';
+  const vigencia=document.getElementById('p-vigencia').value||'—';
+
+  const adultos=viajantes.filter(v=>v.tipo==='adulto');
+  const menores=viajantes.filter(v=>v.tipo==='menor');
+
+  const fotosHTML = fotosData.length>0
+    ? `<div style="margin-top:.8rem"><div class="f-label" style="margin-bottom:.5rem">📸 Fotos del hotel (${fotosData.length})</div>
+       <div class="resumen-fotos-grid">${fotosData.map(f=>`<div class="resumen-foto"><img src="${f.src}"></div>`).join('')}</div></div>`
+    : '<p style="color:var(--muted);font-size:.82rem">Sin fotos adjuntas</p>';
+
+  document.getElementById('resumen-contenido').innerHTML=`
+    <div class="resumen-box">
+      <div class="resumen-title">📋 Resumen de Cotización GML Viajes y Tours</div>
+      <div class="resumen-grid">
+        <div class="resumen-item"><div class="resumen-item-label">👤 Cliente</div><div class="resumen-item-val">${nombre}</div></div>
+        <div class="resumen-item"><div class="resumen-item-label">📱 WhatsApp</div><div class="resumen-item-val">${wa}</div></div>
+        <div class="resumen-item"><div class="resumen-item-label">🌍 Destino</div><div class="resumen-item-val">${destino}</div></div>
+        <div class="resumen-item"><div class="resumen-item-label">🗓️ Tipo de viaje</div><div class="resumen-item-val">${tipo}</div></div>
+        <div class="resumen-item"><div class="resumen-item-label">📅 Entrada</div><div class="resumen-item-val">${fmtDate(entrada)}</div></div>
+        <div class="resumen-item"><div class="resumen-item-label">📅 Salida</div><div class="resumen-item-val">${fmtDate(salida)} · ${noches}</div></div>
+        <div class="resumen-item"><div class="resumen-item-label">🏨 Hotel</div><div class="resumen-item-val">${hotel}</div></div>
+        <div class="resumen-item"><div class="resumen-item-label">⭐ Categoría</div><div class="resumen-item-val">${categ}</div></div>
+        <div class="resumen-item"><div class="resumen-item-label">🛏️ Habitación</div><div class="resumen-item-val">${hab}</div></div>
+        <div class="resumen-item"><div class="resumen-item-label">📦 Plan</div><div class="resumen-item-val">${plan}</div></div>
+      </div>
+
+      <div class="resumen-viajantes">
+        <div class="f-label" style="margin-bottom:.6rem">✈️ Viajantes (${viajantes.length} en total)</div>
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+          ${adultos.map(v=>`<span style="background:#e0f2fe;color:#075985;padding:.2rem .7rem;border-radius:50px;font-size:.78rem;font-weight:700">🧑 ${v.nombre||'Adulto'}</span>`).join('')}
+          ${menores.map(v=>`<span style="background:#fef3c7;color:#92400e;padding:.2rem .7rem;border-radius:50px;font-size:.78rem;font-weight:700">👶 ${v.nombre||'Menor'} (${v.edad} años)</span>`).join('')}
+        </div>
+        <div style="margin-top:.6rem;font-size:.82rem;color:var(--muted)">
+          ${adultos.length} adulto${adultos.length!==1?'s':''} · ${menores.length} menor${menores.length!==1?'es':''}
+          ${menores.length>0?' · Edades: '+menores.map(m=>m.edad+' años').join(', '):''}
+        </div>
+      </div>
+
+      ${fotosHTML}
+
+      <div style="margin-top:1.2rem;background:#fff;border-radius:12px;padding:1rem;border:1px solid rgba(0,196,204,.15)">
+        <div class="f-label" style="margin-bottom:.5rem">✅ Incluye</div>
+        <p style="font-size:.85rem;color:var(--texto)">${incluye}</p>
+      </div>
+      <div style="margin-top:.8rem;background:#fff;border-radius:12px;padding:1rem;border:1px solid #fecaca">
+        <div class="f-label" style="margin-bottom:.5rem;color:#dc2626">❌ No incluye</div>
+        <p style="font-size:.85rem;color:var(--texto)">${noincluye}</p>
+      </div>
+
+      <div class="precio-final-box">
+        <div><div class="precio-final-label">Precio total del paquete</div><div style="font-size:.78rem;color:rgba(255,255,255,.5)">Anticipo: ${fmtMoney(anticipo)}</div></div>
+        <div class="precio-final-val">${fmtMoney(total)}</div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.8rem;font-size:.82rem">
+        <div><span style="color:var(--muted)">✈️ Vuelo:</span> ${vuelo}</div>
+        <div><span style="color:var(--muted)">🛡️ Seguro:</span> ${seguro}</div>
+        <div><span style="color:var(--muted)">📋 Condiciones:</span> ${condiciones}</div>
+        <div><span style="color:var(--muted)">⏰ Vigencia:</span> ${fmtDate(vigencia)}</div>
+      </div>
+    </div>`;
+}
+
+function fmtDate(d){
+  if(!d||d==='—') return '—';
+  const [y,m,day]=d.split('-');
+  const meses=['','Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  return `${day} ${meses[+m]} ${y}`;
+}
+
+// ══════════════════════════════════════
+// GUARDAR Y ENVIAR
+// ══════════════════════════════════════
+function getCotData(){
+  return {
+    id: Date.now(),
+    fecha: new Date().toLocaleDateString('es-MX'),
+    cliente: document.getElementById('c-nombre').value||'—',
+    wa: document.getElementById('c-wa').value||'—',
+    destino: document.getElementById('f-destino').value||document.getElementById('f-destino-custom').value||'—',
+    entrada: document.getElementById('f-entrada').value||'—',
+    salida: document.getElementById('f-salida').value||'—',
+    noches: document.getElementById('f-noches').value||'—',
+    hotel: document.getElementById('h-nombre').value||'—',
+    total: document.getElementById('p-total').value||'0',
+    viajantes: [...viajantes],
+    tipo: document.getElementById('f-tipo').value||'—',
+    plan: document.getElementById('f-plan').value||'—',
+    incluye: document.getElementById('p-incluye').value||'—',
+    noincluye: document.getElementById('p-noincluye').value||'—',
+    condiciones: document.getElementById('p-condiciones').value||'—',
+    vigencia: document.getElementById('p-vigencia').value||'—',
+    vuelo: document.getElementById('p-vuelo').value||'—',
+    seguro: document.getElementById('p-seguro').value||'—',
+    fotos: fotosData.length,
+    estado: 'Pendiente'
+  };
+}
+
+function guardarCotizacion(){
+  const data = getCotData();
+  const cots = JSON.parse(localStorage.getItem('gml_cots')||'[]');
+  cots.unshift(data);
+  localStorage.setItem('gml_cots', JSON.stringify(cots));
+  showToast('✅ Cotización guardada correctamente','ok');
+  updateStats();
+  setTimeout(()=>{ showPage('historial'); resetCotizador(); },1200);
+}
+
+function resetCotizador(){
+  currentStep=1;
+  viajantes=[];vIdCounter=0;fotosData=[];
+  ['c-nombre','c-wa','c-email','c-ciudad','f-destino-custom','f-noches',
+   'h-nombre','h-habitacion','h-amenidades','h-desc','p-total','p-anticipo',
+   'p-incluye','p-noincluye','p-condiciones'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.value='';
+  });
+  document.getElementById('f-destino').selectedIndex=0;
+  document.getElementById('fotos-preview').innerHTML='';
+  for(let i=2;i<=5;i++) document.getElementById('step-'+i).style.display='none';
+  document.getElementById('step-1').style.display='block';
+  addViajante();
+  updateStepsBar();
+}
+
+function enviarWA(){
+  const d=getCotData();
+  const adultos=viajantes.filter(v=>v.tipo==='adulto').length;
+  const menores=viajantes.filter(v=>v.tipo==='menor');
+  let msg=`🌊 *COTIZACIÓN GML VIAJES Y TOURS* 🌴\n\n`;
+  msg+=`Hola ${d.cliente}! 😊\n`;
+  msg+=`Aquí tu cotización personalizada:\n\n`;
+  msg+=`📍 *Destino:* ${d.destino}\n`;
+  msg+=`🏨 *Hotel:* ${d.hotel}\n`;
+  msg+=`📅 *Entrada:* ${fmtDate(d.entrada)}\n`;
+  msg+=`📅 *Salida:* ${fmtDate(d.salida)} (${d.noches})\n`;
+  msg+=`✈️ *Plan:* ${d.plan}\n\n`;
+  msg+=`👥 *Viajantes:* ${viajantes.length} personas\n`;
+  msg+=`   ${adultos} adulto${adultos!==1?'s':''}\n`;
+  if(menores.length>0) msg+=`   ${menores.length} menor${menores.length!==1?'es':''} (${menores.map(m=>m.edad+' años').join(', ')})\n`;
+  msg+=`\n✅ *Incluye:*\n${d.incluye}\n\n`;
+  msg+=`❌ *No incluye:*\n${d.noincluye}\n\n`;
+  msg+=`💰 *PRECIO TOTAL: $${Number(d.total).toLocaleString('es-MX')} MXN*\n\n`;
+  msg+=`📋 *Condiciones:* ${d.condiciones}\n`;
+  msg+=`⏰ *Cotización válida hasta:* ${fmtDate(d.vigencia)}\n\n`;
+  msg+=`¡Estamos para servirte! 🙌\n*GML Viajes y Tours* · 993 304 5662`;
+  const waNum=d.wa.replace(/\D/g,'');
+  const destNum=waNum.length===10?'52'+waNum:waNum;
+  window.open('https://wa.me/'+destNum+'?text='+encodeURIComponent(msg),'_blank');
+  showToast('💬 Abriendo WhatsApp...','ok');
+}
+
+// ══════════════════════════════════════
+// HISTORIAL
+// ══════════════════════════════════════
+function renderHistorial(){
+  const cots=JSON.parse(localStorage.getItem('gml_cots')||'[]');
+  const tbody=document.getElementById('historial-body');
+  if(!cots.length){
+    tbody.innerHTML='<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:2rem">Aún no hay cotizaciones guardadas</td></tr>';
+    return;
+  }
+  tbody.innerHTML=cots.map((c,i)=>`
+    <tr>
+      <td><strong>#${String(cots.length-i).padStart(3,'0')}</strong></td>
+      <td><strong>${c.cliente}</strong><br><span style="font-size:.75rem;color:var(--muted)">${c.fecha}</span></td>
+      <td>${c.destino}</td>
+      <td style="font-size:.82rem">${fmtDate(c.entrada)}<br>→ ${fmtDate(c.salida)}</td>
+      <td>${c.viajantes?c.viajantes.length:1} pers.</td>
+      <td><strong>${fmtMoney(c.total)}</strong></td>
+      <td><span class="badge ${c.estado==='Confirmada'?'badge-ok':c.estado==='Enviada'?'badge-env':'badge-pend'}">${c.estado}</span></td>
+      <td style="display:flex;gap:.4rem;flex-wrap:wrap">
+        <button class="btn-tabla ver" onclick="verCot(${i})">👁 Ver</button>
+        <button class="btn-tabla wa" onclick="reenviarWA(${i})">💬 WA</button>
+        <button class="btn-tabla" style="background:#fef2f2;color:#dc2626" onclick="cambiarEstado(${i})">✏️</button>
+        <button class="btn-tabla" style="background:#fef2f2;color:#dc2626" onclick="deleteCot(${i})">🗑</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function updateStats(){
+  const cots=JSON.parse(localStorage.getItem('gml_cots')||'[]');
+  document.getElementById('stat-total').textContent=cots.length;
+  document.getElementById('stat-pend').textContent=cots.filter(c=>c.estado==='Pendiente').length;
+  document.getElementById('stat-conf').textContent=cots.filter(c=>c.estado==='Confirmada').length;
+  document.getElementById('stat-env').textContent=cots.filter(c=>c.estado==='Enviada').length;
+}
+
+function renderUltimas(){
+  const cots=JSON.parse(localStorage.getItem('gml_cots')||'[]');
+  const el=document.getElementById('ultimas-cots');
+  if(!cots.length){ el.innerHTML='<p style="color:var(--muted);font-size:.9rem">Aún no hay cotizaciones.</p>'; return; }
+  el.innerHTML=cots.slice(0,5).map(c=>`
+    <div style="display:flex;align-items:center;gap:1rem;padding:.8rem 0;border-bottom:1px solid var(--gris-b)">
+      <div style="font-size:1.5rem">🌊</div>
+      <div style="flex:1"><strong>${c.cliente}</strong> · ${c.destino}<br>
+        <span style="font-size:.78rem;color:var(--muted)">${fmtDate(c.entrada)} → ${fmtDate(c.salida)} · ${fmtMoney(c.total)}</span></div>
+      <span class="badge ${c.estado==='Confirmada'?'badge-ok':c.estado==='Enviada'?'badge-env':'badge-pend'}">${c.estado}</span>
+    </div>
+  `).join('');
+}
+
+function verCot(i){
+  const cots=JSON.parse(localStorage.getItem('gml_cots')||'[]');
+  const c=cots[i];
+  const adultos=c.viajantes?c.viajantes.filter(v=>v.tipo==='adulto'):[];
+  const menores=c.viajantes?c.viajantes.filter(v=>v.tipo==='menor'):[];
+  document.getElementById('modal-content').innerHTML=`
+    <div style="display:grid;gap:.8rem;font-size:.88rem">
+      <div><strong>👤 Cliente:</strong> ${c.cliente} · 📱 ${c.wa}</div>
+      <div><strong>🌍 Destino:</strong> ${c.destino} · ${c.tipo}</div>
+      <div><strong>📅 Fechas:</strong> ${fmtDate(c.entrada)} → ${fmtDate(c.salida)} · ${c.noches}</div>
+      <div><strong>🏨 Hotel:</strong> ${c.hotel} · ${c.plan}</div>
+      <div><strong>✈️ Vuelo:</strong> ${c.vuelo} · <strong>🛡️ Seguro:</strong> ${c.seguro}</div>
+      <div><strong>👥 Viajantes:</strong> ${adultos.length} adulto${adultos.length!==1?'s':''}, ${menores.length} menor${menores.length!==1?'es':''}
+        ${menores.length>0?' ('+menores.map(m=>m.nombre||'Menor')+' '+menores.map(m=>m.edad+' años').join(', ')+')'  :''}</div>
+      <hr style="border:none;border-top:1px solid var(--gris-b)">
+      <div><strong>✅ Incluye:</strong><br>${c.incluye}</div>
+      <div><strong>❌ No incluye:</strong><br>${c.noincluye}</div>
+      <div><strong>📋 Condiciones:</strong> ${c.condiciones}</div>
+      <div style="background:var(--azul);color:#fff;border-radius:10px;padding:1rem;text-align:center;margin-top:.5rem">
+        <div style="font-size:.75rem;opacity:.7">PRECIO TOTAL</div>
+        <div style="font-size:1.8rem;font-family:var(--display);color:var(--sol)">${fmtMoney(c.total)}</div>
+      </div>
+    </div>`;
+  document.getElementById('modal-bg').classList.add('open');
+}
+
+function closeModal(){ document.getElementById('modal-bg').classList.remove('open'); }
+document.getElementById('modal-bg').addEventListener('click',e=>{ if(e.target===document.getElementById('modal-bg')) closeModal(); });
+
+function cambiarEstado(i){
+  const cots=JSON.parse(localStorage.getItem('gml_cots')||'[]');
+  const estados=['Pendiente','Enviada','Confirmada'];
+  const actual=cots[i].estado;
+  const siguiente=estados[(estados.indexOf(actual)+1)%estados.length];
+  cots[i].estado=siguiente;
+  localStorage.setItem('gml_cots',JSON.stringify(cots));
+  renderHistorial(); updateStats();
+  showToast('Estado actualizado a: '+siguiente,'ok');
+}
+
+function deleteCot(i){
+  if(!confirm('¿Eliminar esta cotización?')) return;
+  const cots=JSON.parse(localStorage.getItem('gml_cots')||'[]');
+  cots.splice(i,1);
+  localStorage.setItem('gml_cots',JSON.stringify(cots));
+  renderHistorial(); updateStats();
+  showToast('Cotización eliminada','ok');
+}
+
+function reenviarWA(i){
+  const cots=JSON.parse(localStorage.getItem('gml_cots')||'[]');
+  const c=cots[i];
+  const adultos=c.viajantes?c.viajantes.filter(v=>v.tipo==='adulto').length:1;
+  const menores=c.viajantes?c.viajantes.filter(v=>v.tipo==='menor'):[];
+  let msg=`🌊 *COTIZACIÓN GML VIAJES Y TOURS* 🌴\n\n`;
+  msg+=`Hola ${c.cliente}! 😊\nAquí tu cotización:\n\n`;
+  msg+=`📍 *Destino:* ${c.destino}\n🏨 *Hotel:* ${c.hotel}\n`;
+  msg+=`📅 *Entrada:* ${fmtDate(c.entrada)}\n📅 *Salida:* ${fmtDate(c.salida)} (${c.noches})\n`;
+  msg+=`✈️ *Plan:* ${c.plan}\n👥 *Viajantes:* ${adultos} adulto${adultos!==1?'s':''}`;
+  if(menores.length>0) msg+=` + ${menores.length} menor${menores.length!==1?'es':''}`;
+  msg+=`\n\n✅ *Incluye:* ${c.incluye}\n❌ *No incluye:* ${c.noincluye}\n`;
+  msg+=`\n💰 *PRECIO: $${Number(c.total).toLocaleString('es-MX')} MXN*\n`;
+  msg+=`\n*GML Viajes y Tours* · 993 304 5662 🌴`;
+  const waNum=c.wa.replace(/\D/g,'');
+  const destNum=waNum.length===10?'52'+waNum:waNum;
+  window.open('https://wa.me/'+destNum+'?text='+encodeURIComponent(msg),'_blank');
+}
+
+// ══════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════
+function showToast(msg,tipo='ok'){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className='toast '+tipo;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// Init
+updateStats();
+</script>
+</body>
+</html>
